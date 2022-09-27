@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RegistroUsuario</title>
+    <link rel="stylesheet" href="{% static 'sinRegistro/css/RegistroUsuario.css' %}">
+    <script src="{% static 'sinRegistro/js/validacionesRegistro.js' %}"></script>
+</head>
+<body>
+    <br></br>
+    <form method="POST" class="form-registro">{% csrf_token %}
+        <h2 class="form_titulo">Registrate</h2>
+        <br>
+        <h3 class="subtitulo">Te damos la bienvenida a Turismo Real</h3>
+        <div class="contenedor">
+            <div class="NombresRegistro"><input type="text" name="nombres" id="nombres" placeholder="Nombres" required ></div>
+            <div class="ApellidosRegistro"><input type="text" name="apellidos" id="apellidos" placeholder="Apellidos" required ></div>
+            <div class="Usuario"><input type="text" name="usuario" id="usuario" placeholder="Usuario" required ></div>
+            <div class="EmailRegistro"><input type="email" name="email" id="email" placeholder="Email" required ></div>
+            <div class="Contraseña"><input type="password" name="contraseña" id="contraseña" placeholder="Contraseña" required></div>
+            <div class="RepContraseña"><input type="password" name="repcontraseña" id="repcontraseña" placeholder="Repetir Constraseña" required></div>
+            <div class="Identificacion"><input type="text" name="identificacion" id="identificacion" placeholder="RUT o pasaporte" required ></div>
+            <div class="Celular"><input type="text" name="celular" id="celular" placeholder="Celular" required></div>
+            <div class="Pais"><input type="text" name="pais" id="pais" placeholder="Pais" required></div>
+        </div> 
+
+        <input type="submit" value="Registrarme" class="btn-Registrarme">
+        <h3 class="subtitulo">{{mensaje}}</h2>
+    </form>
+</body>
+</html>

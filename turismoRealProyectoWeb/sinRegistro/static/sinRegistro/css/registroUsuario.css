@@ -1,0 +1,84 @@
+*{
+    margin: 0;
+    padding: 0%;
+    box-sizing: border-box;
+}
+
+body{
+    background-color: white;
+    display: flex;
+    min-height: 100vh;
+}
+.form-registro{
+    background-color: white;
+    margin: auto;
+    width: 35%;
+    /*max-width: 400px;*/
+    padding: 4.5em 3em;
+    border-radius: 10px;
+    border: solid rgb(210, 210, 210);
+    box-shadow: 0 5px 10px -5px rgb(0 0  0/ 30%);
+    text-align: center;
+    
+}
+.form_titulo{
+    font-size: 2rem;
+    margin-bottom: .5em;
+    border-bottom: 1px solid rgb(210, 210, 210);
+}
+h3{
+    font-weight: 300;
+    font-size: x-large;
+    margin-bottom: 20px;
+}
+div input{
+    width: 100%;
+    padding: 10px;
+    text-align: left;
+    margin-top: 10px;
+    border-radius: 5px;
+    border-style: solid;
+    border-color: rgb(210, 210, 210);
+   
+}
+input[type="submit"]{
+    width: 70%;
+    border: 1px solid;
+    background: rgb(176, 37, 174);
+    border-radius: 8px;
+    font-size: 18px;
+    color: #F5F5F5;
+    cursor:pointer;
+    outline:none;
+    margin-top: 40px;
+    font-family: sans-serif;
+    padding: 20px ;
+    text-align: center ;
+}
+.contenedor{
+    padding: 10px 30px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.EmailRegistro{
+    width: 100%;
+}
+.NombresRegistro{
+    width: 100%;
+}
+.ApellidosRegistro{
+    width: 100%;
+}
+.Identificacion{
+    width: 100%;
+}
+.Direccion{
+    width: 100%;
+}
+.Contraseña{
+    width: 100%;
+}
+.RepContraseña{
+    width: 100%;
+}

@@ -15,9 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+#from django.contrib.auth import views as auth_views
 
 urlpatterns = [
+    #path('IniciarSesion', auth_views.LoginView.as_view(redirect_authenticated_user=True)),
     path('admin/', admin.site.urls),
     #incluimos todas las urls de la aplicacion "sinRegistro":
-    path('sinRegistro/',include("sinRegistro.urls"))
+    path('',include("sinRegistro.urls")),
+    path('',include("clientes.urls")),
+    #path("CerrarSesion/", auth_views.LogoutView.as_view(), name="logout")
 ]
