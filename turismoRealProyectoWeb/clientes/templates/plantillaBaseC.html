@@ -1,0 +1,72 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <link rel="stylesheet" href="{% static 'sinRegistro/css/stylebase.css' %}">
+    <script src="https://kit.fontawesome.com/86ec04efd1.js" crossorigin="anonymous"></script>
+    {% block head %}
+    {% endblock %}
+</head>
+
+<body>
+    <header>
+        <nav>
+            <input type="checkbox" id="check">
+            <label for="check" class="checkbtn">
+                <i class="fa-solid fa-bars"></i>
+            </label>
+            <a href="Index.html">
+                <img src={% static "sinRegistro/images\logo.png" %} alt="No se encuentra disponible" class="logo-img">
+            </a>
+            <ul class="nav-list">
+                <li><a href="Index.html">Inicio</a></li>
+                <li><a href="#">¿Como reservar?</a></li>
+                <li><a href="Registrarse">Registrate</a></li>
+                {% if usuarioActual %}
+                <li><a href="{% url 'logout' %}" name ='CerrarSesion'>Cerrar Sesión</a></li>
+                <h2> Bienvenido {{usuarioActual}}</h2>
+                
+                {% else %}
+                <li><a href="IniciarSesion">Iniciar Sesion</a></li>
+                
+                {% endif %}
+
+            </ul>
+        </nav>
+
+    </header>
+    {% block contenido %}
+    {% endblock %}
+    
+</body>
+
+<footer class="pie-pagina">
+    <div class="grupo-1">
+        <div class="box-1">
+            <figure>
+                <a href="#">
+                    <img src={% static "sinRegistro/images\logo_footer.jpeg" %} alt="Imagen no disponible">
+                </a>
+            </figure>
+        </div>
+        <div class="box-2">
+            <h2>SOBRE NOSOTROS</h2>
+            <p>Somos una empresa familiar que se dedica al arriendo de departamentos 
+                y otros servicio en zonas turisticas del país.
+            </p>
+        </div>
+        <div class="box-3">
+            <h2>SIGUENOS</h2>
+            <div class="red-social">
+                <a href="#" class="fa fa-facebook"></a>
+                <a href="#" class="fa fa-instagram"></a>
+                <a href="#" class="fa fa-twitter"></a>
+            </div>
+        </div>
+    </div>
+    <div class="grupo-2">
+        <small>&copy; 2022 <b>Turismo Real</b> - Todos Los Derecho Reservados.</small>
+    </div>
+</footer>
+</html>

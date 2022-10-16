@@ -1,0 +1,22 @@
+{% extends 'plantillaBase.html' %}
+{% load static %}
+    {% block head %}
+    <link rel="stylesheet" href="{% static 'sinRegistro/css/estilos_login.css' %}">
+    {% endblock %}
+    {% block contenido %}
+    <form action="" method="POST" class="form-login">
+        {% csrf_token %}
+    
+        <h2 class="form_titulo">Iniciar Sesión</h2>
+        <p class="form_parrafo">Te damos la bienvenida a Turismo Real</p>
+        <div class="form_container">
+            <div class="form_grupo"><input type="text" name="usuario" id="usuario" placeholder="Usuario" required ></div>
+            <div class="form_grupo"><input type="password" name="contrasena" id="contrasena" placeholder="Contraseña" required></div>
+            <div class="form_radio"><input type="radio" name="recordar">   Recordar </div>
+            <br>
+            <p class="link"><a href="Verificacion.html">Ólvide mi contraseña</a></p>
+            <input type="submit" value="Iniciar Sesión" class="btn-Iniciar" > 
+        </div>
+        {{mensaje}}
+        <br>
+    {% endblock %}

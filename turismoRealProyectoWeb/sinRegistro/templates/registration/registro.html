@@ -1,15 +1,12 @@
-<!DOCTYPE html>
-{% load static %}
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% extends 'plantillaBase.html' %}
+    {% load static %}
+    {% block head %}
     <title>RegistroUsuario</title>
     <link rel="stylesheet" href="{% static 'sinRegistro/css/RegistroUsuario.css' %}">
     <script src="{% static 'sinRegistro/js/validacionesRegistro.js' %}"></script>
-</head>
-<body>
+    {% endblock %}
+
+    {% block contenido %}
     <br></br>
     <form method="POST" class="form-registro">{% csrf_token %}
         <h2 class="form_titulo">Registrate</h2>
@@ -27,8 +24,8 @@
             <div class="Pais"><input type="text" name="pais" id="pais" placeholder="Pais" required></div>
         </div> 
 
-        <input type="submit" value="Registrarme" class="btn-Registrarme">
+        <input type="submit" value="Registrarme"  class="btn-Registrarme">
         <h3 class="subtitulo">{{mensaje}}</h2>
     </form>
-</body>
-</html>
+    <br>
+    {% endblock %}

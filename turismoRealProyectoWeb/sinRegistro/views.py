@@ -1,15 +1,40 @@
 from dataclasses import dataclass
+from http.client import HTTPResponse
 from multiprocessing.sharedctypes import Value
-from django.shortcuts import render
-from django.db import connection
 import random
+from django.shortcuts import render, redirect
+from django.db import connection
+from django.core.mail import EmailMessage
+from django.conf import settings
+from django.template.loader import render_to_string
+import time
+
+
+
+def iniciarSesion(request):
+
+    data ={}
+    if request.method == 'POST':
+        try:
+            usuario = request.POST.get('usuario')
+            contrasena = request.POST.get('contrasena')
+            patron = 'Portafolio'
+            user = autenticar(usuario,contrasena,patron)
+            request.session['usuario_id'] = user[0]
+            request.session['usuario'] = usuario
+            return redirect('home')
+
+        except:
+            data['mensaje'] = 'Algo salió mal'
+    return render(request, 'registration/login.html',data)
+
 
 def registro(request):
     data = {
     }
 
     if request.method == 'POST':
-        try:
+        
             nombres = request.POST.get('nombres')
             apellidos = request.POST.get('apellidos')
             usuario = request.POST.get('usuario')
@@ -21,15 +46,29 @@ def registro(request):
             codigoVerificacion = generarCodigoVerificacion()
             idTipoUsuario = 1
             patron = 'Portafolio'
-            habilitado= False
+            habilitado= 'Deshabilitado'
             esPasaporte= False
             crearCliente(nombres,apellidos,usuario,correo,contrasena,identificacion,celular,pais,codigoVerificacion,idTipoUsuario,patron,habilitado,esPasaporte)
+            enviarEmail(codigoVerificacion,correo)
             data ['mensaje']= f"{nombres, apellidos}, te registraste con exito, verifica el codigo de validacion que se te envió a tu correo"
-        except:
-            data ['mensaje'] = "Algo salio mal"
+        
+        
 
 
     return render(request,'registration/registro.html',data)
+
+
+def verificacion(request):
+    data = {
+    }
+    if request.method == 'POST':
+        codigoVerificacion = request.POST.get('codigo')
+        verificar(codigoVerificacion)
+
+
+    
+    return render(request, 'registration/Verificacion.html', data)
+
 
 def generarCodigoVerificacion():
     conjunto = ['FJD6','JNC3','FZE7','QYT9','WMN1']
@@ -40,6 +79,22 @@ def generarCodigoVerificacion():
     codigo   = etiqueta+numero+letra
     return codigo
 
+def autenticar(usuario,contra,patron):
+    cursor = connection.cursor()
+    params = (usuario,contra,patron)
+    cursor.execute("{CALL dbo.SP_U_Validar(%s,%s,%s)}",params)
+    records = cursor.fetchone()
+    return records
+    
+    
+
+def verificar(codigo):
+    cursor = connection.cursor()
+    params = (codigo,)
+    cursor.execute("{CALL dbo.SP_VERIFICAR_CODIGO(%s)}",params)
+
+
+
 def crearCliente(nombres, apellidos, usuario, correo, contrasena,
                 identificacion,celular,pais,codigoVerificacion, 
                 idTipoUsuario,patron, habilitada,esPasaporte):
@@ -47,4 +102,8 @@ def crearCliente(nombres, apellidos, usuario, correo, contrasena,
     cursor = connection.cursor()
     params=(nombres, apellidos, usuario, correo, contrasena,identificacion,celular,pais,codigoVerificacion, idTipoUsuario,patron, habilitada,esPasaporte)
     cursor.execute("{CALL dbo.SP_UC_CREAR(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)}",params)
-    
+    cursor.close()
+
+def enviarEmail(codigo,correo):
+    email = EmailMessage('Valida tu Cuenta en Turismo Real',codigo,settings.EMAIL_HOST_USER,[correo])
+    email.send()

@@ -1,0 +1,58 @@
+*{
+    margin: 0;
+    padding: 0%;
+    box-sizing: border-box;
+}
+
+
+.form_verificacion{
+    background-color: white;
+    height: 390px;
+    margin: auto;
+    width: 100%;
+    max-width: 590px;
+    border-radius: 20px;
+    border: 1px solid rgb(210, 210, 210);
+    /*box-shadow: 0 5px 10px -5px rgb(0 0  0/ 30%);*/
+    text-align: center;
+}
+.Titulo{
+    font-size: 2rem;
+    margin-bottom: 30px;
+}
+h3 {
+    border-bottom: 1px solid rgb(210, 210, 210);
+    padding: 10px;
+}
+.Parrafo{
+    font-weight: 300;
+    font-size: x-large;
+    margin-bottom: 20px;
+    text-align: justify;
+    padding: 0px 50px;
+    padding-top: 10px;
+
+}
+div input{
+    width: 60%;
+    padding: 10px;
+    text-align: left;
+    margin-top: 10px;
+    border-radius: 5px;
+    border-style: solid ;
+    border-color: rgb(210, 210, 210);
+
+}
+input[type="submit"]{
+    width: 40%;
+    height: 50px;
+    border: 1px solid;
+    background: rgb(176, 37, 174);
+    border-radius: 6px;
+    font-size: 18px;
+    color: #F5F5F5;
+    cursor:pointer;
+    outline:none;
+    margin-top: 50px;
+    font-family: sans-serif;
+}

@@ -4,19 +4,14 @@
     box-sizing: border-box;
 }
 
-body{
-    background-color: white;
-    display: flex;
-    min-height: 100vh;
-}
 .form-registro{
     background-color: white;
     margin: auto;
-    width: 35%;
+    height: 620px;
+    width: 45%;
     /*max-width: 400px;*/
-    padding: 4.5em 3em;
     border-radius: 10px;
-    border: solid rgb(210, 210, 210);
+    border: 1px solid rgb(210, 210, 210);
     box-shadow: 0 5px 10px -5px rgb(0 0  0/ 30%);
     text-align: center;
     
@@ -29,20 +24,23 @@ body{
 h3{
     font-weight: 300;
     font-size: x-large;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+    text-align: justify;
+    margin-left: 27px;
 }
 div input{
     width: 100%;
     padding: 10px;
     text-align: left;
-    margin-top: 10px;
+    margin-top: 6px;
     border-radius: 5px;
     border-style: solid;
     border-color: rgb(210, 210, 210);
    
 }
 input[type="submit"]{
-    width: 70%;
+    width: 45%;
+    height: 50px;
     border: 1px solid;
     background: rgb(176, 37, 174);
     border-radius: 8px;
@@ -50,9 +48,8 @@ input[type="submit"]{
     color: #F5F5F5;
     cursor:pointer;
     outline:none;
-    margin-top: 40px;
+    margin-top: 20px;
     font-family: sans-serif;
-    padding: 20px ;
     text-align: center ;
 }
 .contenedor{

@@ -1,0 +1,30 @@
+
+{% extends 'plantillaBaseC.html' %}
+{% load static %}
+    {% block head %}
+    <link rel="stylesheet" href={% static "clientes/css/ComoReservar.css" %}>
+    {% endblock %}
+
+    {% block contenido %}
+    <div>
+        <h1 class="titulo">¿CÓMO RESERVAR?</h1>
+        <div class="Parrafo_buscar">
+            <img class="img_buscar" src={% static "clientes/images/busqueda.png" %}>
+            <aside>Utiliza los filtros para ubicar la propiedad que más se adapte a tu necesidad,
+            indicando lugar, y cantidad de personas, luego realiza la reseva en línea.</aside>
+            <div class="reset"></div>
+        </div>
+        <div class="Parrafo_buscar">
+            <img class="img_buscar" src={% static "clientes/images/pago.png" %}>
+            <aside>La reserva queda confirmada una vez se confirme tu abono. Nos respaldan más de 800 arriendos por año.
+            Confianza y seguridad te ofrece Turismo Real.</aside>
+            <div class="reset"></div>
+        </div>
+        <div class="Parrafo_buscar">
+            <img class="img_buscar" src={% static "clientes/images/vacaciones.png" %}>
+            <aside>Controlamos el estado de las propiedades con estándares de administración hotelera.
+            Así tus vacaciones serán una experencia inolvidable.</aside>
+            <div class="reset"></div>
+        </div>
+    </div>
+    {% endblock %}
