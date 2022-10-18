@@ -1,6 +1,9 @@
 {% extends 'plantillaBase.html' %}
 {% block contenido %}
-
+{% load static %}
+{% if usuarioActual %}
+<h1> Bienvenid@ {{usuarioActual}}</h1>
+{% endif %}
 
 <form action="" class="Tarjeta" method ='POST'>
     {% csrf_token %}
@@ -20,13 +23,21 @@
     </select>
     <input type="submit" name="buscar">
 </form>
-<h1> Bienvenid@ {{usuarioActual}}</h1>
+
 {% for c in resultados %}
-    <h1 href =''>{{c.11}},{{c.12}}</h1>
-    <a>{{c.3}} huespedes</a>
-    <a>{{c.3}} habitación</a>
-    <a>{{c.4}} huespedes</a>
-    <h1>${{c.5}} CLP por noche</h1>
-    <input type="submit">
+    
+    <h1 name ='ubicación'>{{c.11}},{{c.12}}</h1>
+    <a name = 'huespedes'>{{c.3}} huespedes</a>
+    <a name = 'habitación'>{{c.3}} habitación</a>
+    <a name = 'huespedes'>{{c.4}} huespedes</a>
+    <h1 name = 'costo'>${{c.5}} CLP por noche</h1>
+    {% if usuarioActual %}
+    <button><a href="{% url 'detalleParaReservar' c.0 %}" >Reservar</a></button>
+    
+    
+    {% else %}
+    <button><a href="IniciarSesion" >Reservar</a></button>
+    {% endif %}
+    
 {% endfor %}
 {% endblock %}

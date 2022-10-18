@@ -1,38 +1,11 @@
-<!DOCTYPE html>
+{% extends 'plantillaBase.html' %}
 {% load static %}
-<html>
-<head>
-    <title>Document</title>
-    <link rel="stylesheet" href="{% static 'clientes/css/style.css' %}"/>
-</head>
-<body>
-    <header>
-        <div class="navbar">
-            <img class="logo" src="{% static 'clientes/images/TRLOGOOo.png' %}" alt="">
-            <nav>
-                <ul >
-                    <li><a href="#">Inicio</a></li>
-                    <li><a href="#">¿Como reservar?</a></li>
-                    <li><a href="#">Mi Perfil</a></li>
-                    <li><a href="#">Cerrar Sesión</a></li>
-                </ul>
-            </nav>
-        </div>
-        
-    </header>
-    <br>
-
+    {% block contenido %}
     <section class="container">
-        {% for departamento in departamentos%}
         <article class="tarjeta">
             <img class="imgTarjeta" src="{% static 'clientes/images/vinadelmar.jpg' %}" alt="">
             <h2 id="descripcion">{{departamento.descripcion}}</h2>
             <p>HOla</p>
-
-
         </article>
-        {% endfor %}
     </section>
-    
-</body>
-</html>
+    {% endblock %}

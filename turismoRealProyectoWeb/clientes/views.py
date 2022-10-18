@@ -2,48 +2,66 @@ import http
 from multiprocessing import context
 from urllib import request
 from django.shortcuts import render,redirect
-from . models import Departamentos
 from django.db import connection
 from django.contrib.auth import authenticate
+from .models import Departamentos
 # Create your views here.
 
 def home(request):
+    data ={
+    'regiones':listarRegion()}
 
     if 'usuario_id' in request.session:
         usuarioActual = request.session['usuario']
-        data ={
-        'regiones':listarRegion(),
-        'usuarioActual':usuarioActual}
+        data ['usuarioActual']= usuarioActual
 
-        if request.method == 'POST':
-            region = request.POST.get('Regiones')
-            personas = request.POST.get('Personas')
-            resultados = EncontrarDepto(region, personas)
-            data ['resultados']=resultados
+    if request.method == 'POST':
+        region = request.POST.get('Regiones')
+        personas = request.POST.get('Personas')
+        resultados = EncontrarDepto(region, personas)
+        data ['resultados']=resultados
            
-    
-        return render(request, 'clientes/Principal.html', data)
-    
-    else:
-        return redirect('iniciarSesion')
+    return render(request, 'clientes/Principal.html', data)
 
-def resultadosBusqueda(request):
-    return render(request, 'clientes/ResultadosBusqueda.html')
+def miPerfil(request):
+    data ={
+    }
+    if 'usuario_id' in request.session:
+        usuarioActual = request.session['usuario']
+        data ['usuarioActual']= usuarioActual
+    return render(request, 'clientes/Perfil.html',data)
+
 
 def ComoReservar(request):
-    return render(request, 'clientes/ComoReservar.html')
+    data ={
+    }
+    if 'usuario_id' in request.session:
+        usuarioActual = request.session['usuario']
+        data ['usuarioActual']= usuarioActual
+    return render(request, 'clientes/ComoReservar.html', data)
 
 def reservaExitosa(request):
     return render(request, 'clientes/ReservaExitosa.html')
 
-def solicitarReserva(request):
-    return render(request, 'clientes/SolicitarReserva.html')
+def detalleParaReservar(request,item):
+    
+    departamento = Departamentos.objects.get(iddepartamento = item)
+    data ={
+        'departamento':departamento
+    }
+    if 'usuario_id' in request.session:
+        usuarioActual = request.session['usuario']
+        data ['usuarioActual']= usuarioActual
+        
+    return render(request, 'clientes/detalleParaReservar.html' ,data)
 
-def busqueda(request):
-    if request.method == 'POST':
-        buscar = request.POST.get('buscar')
-        departamentos = Departamentos.objects.all()
-    return render(request, 'clientes/busqueda.html')
+def solicitarReserva(request):
+    data = {
+    }
+    if 'usuario_id' in request.session:
+        usuarioActual = request.session['usuario']
+        data ['usuarioActual']= usuarioActual
+    return render(request, 'clientes/SolicitarReserva.html',data)
 
 def logout(request):
     try:

@@ -16,12 +16,13 @@
             <label for="check" class="checkbtn">
                 <i class="fa-solid fa-bars"></i>
             </label>
-            <a href="#">
+            
                 <img src={% static "sinRegistro/images\logo.png" %} alt="No se encuentra disponible" class="logo-img">
             </a>
             <ul class="nav-list">
                 <li><a href="home">Inicio</a></li>
                 <li><a href="ComoReservar">¿Como reservar?</a></li>
+                
                 {% if usuarioActual %}
                 <li><a href="Perfil">Mi Perfil</a></li>
                 <li><a href="{% url 'logout' %}" name ='CerrarSesion'>Cerrar Sesión</a></li>

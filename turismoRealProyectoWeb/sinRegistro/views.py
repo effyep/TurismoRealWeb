@@ -23,7 +23,6 @@ def iniciarSesion(request):
             request.session['usuario_id'] = user[0]
             request.session['usuario'] = usuario
             return redirect('home')
-
         except:
             data['mensaje'] = 'Algo salió mal'
     return render(request, 'registration/login.html',data)
@@ -49,8 +48,8 @@ def registro(request):
             habilitado= 'Deshabilitado'
             esPasaporte= False
             crearCliente(nombres,apellidos,usuario,correo,contrasena,identificacion,celular,pais,codigoVerificacion,idTipoUsuario,patron,habilitado,esPasaporte)
-            enviarEmail(codigoVerificacion,correo)
             data ['mensaje']= f"{nombres, apellidos}, te registraste con exito, verifica el codigo de validacion que se te envió a tu correo"
+            enviarEmail(codigoVerificacion,correo)
         
         
 
