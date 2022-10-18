@@ -1,4 +1,8 @@
 {% extends 'plantillaBase.html' %}
+{% load static %}
 
 {% block contenido %}
+{% for c in depto %}
+    <a>{{c.0}}</a>
+{% endfor %}
 {% endblock %}

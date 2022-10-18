@@ -43,7 +43,7 @@ def registro(request):
             celular = request.POST.get('celular')
             pais = request.POST.get('pais')
             codigoVerificacion = generarCodigoVerificacion()
-            idTipoUsuario = 1
+            idTipoUsuario = 3
             patron = 'Portafolio'
             habilitado= 'Deshabilitado'
             esPasaporte= False
