@@ -5,39 +5,53 @@
 <h1> Bienvenid@ {{usuarioActual}}</h1>
 {% endif %}
 
-<form action="" class="Tarjeta" method ='POST'>
-    {% csrf_token %}
-    <h3>Seleccione una ubicación</h3>
-    <select name="Regiones" id="regiones">
-        {% for c in regiones %}
-        <option value='{{c.1}}'>{{c.0}}</option>
-        {% endfor %}
-    </select>
-    <br>
-    <h3>Cantidad de personas</h3>
-    <select name="Personas" id="personas">
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-    </select>
-    <input type="submit" name="buscar">
-</form>
+    {% block head %}
+    <title>Inicio</title>
+    <link rel="stylesheet" href="{% static 'clientes/css/principal.css' %}">
+    {% endblock %}
 
-{% for c in resultados %}
-    
-    <h1 name ='ubicación'>{{c.11}},{{c.12}}</h1>
-    <a name = 'huespedes'>{{c.3}} huespedes</a>
-    <a name = 'habitación'>{{c.3}} habitación</a>
-    <a name = 'huespedes'>{{c.4}} huespedes</a>
-    <h1 name = 'costo'>${{c.5}} CLP por noche</h1>
-    {% if usuarioActual %}
-    <button><a href="{% url 'detalleParaReservar' c.0 %}" >Reservar</a></button>
-    
-    
-    {% else %}
-    <button><a href="IniciarSesion" >Reservar</a></button>
-    {% endif %}
-    
-{% endfor %}
+    <section>
+        <form class="form-tarjeta" method ='POST'>
+            {% csrf_token %}
+            <h2 class="title">¿Dónde deseas ir?</h2>
+            <h3 class="descripcion">Encuentra y reserva departamentos únicos</h3>
+            <h3>Seleccione ubicación</h3>
+            <div class="select">
+                <select name="Regiones" id="cars">
+                    {% for c in regiones %}
+                    <option value='{{c.1}}'>{{c.0}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <h3>Cantidad de personas</h3>
+            <select name="Personas" id="personas">
+                <option selected disabled>Cantidad</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+            </select>
+            <input type="submit" value="Buscar" class="btn-buscar">
+            
+        </form>
+    </section>
+
+        
+    <br>    
+    <br> 
+    <br> 
+        {% for c in resultados %}
+        <h1 name ='ubicación'>{{c.11}},{{c.12}}</h1>
+        <a name = 'huespedes'>{{c.3}} huespedes</a>
+        <a name = 'habitación'>{{c.3}} habitación</a>
+        <a name = 'huespedes'>{{c.4}} huespedes</a>
+        <h1 name = 'costo'>${{c.5}} CLP por noche</h1>
+        {% if usuarioActual %}
+        <button><a href="{% url 'detalleParaReservar' c.0 %}" >Reservar</a></button>
+        {% else %}
+        <button><a href="IniciarSesion" >Reservar</a></button>
+        {% endif %}
+        {% endfor %}
+
 {% endblock %}

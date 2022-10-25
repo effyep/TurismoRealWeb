@@ -83,10 +83,10 @@ WSGI_APPLICATION = 'turismoRealProyectoWeb.wsgi.application'
 DATABASES = {
         'default': {
             'ENGINE': 'mssql',
-            'NAME': 'TR',
+            'NAME': 'TurismoReal',
             'USER': '',
             'PASSWORD': '',
-            'HOST': 'EC2AMAZ-KACC40T',
+            'HOST': 'FELIP',
             'PORT': '',
             'OPTIONS': {
                 'driver': 'ODBC Driver 17 for SQL Server',

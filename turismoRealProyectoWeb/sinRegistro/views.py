@@ -50,12 +50,7 @@ def registro(request):
             crearCliente(nombres,apellidos,usuario,correo,contrasena,identificacion,celular,pais,codigoVerificacion,idTipoUsuario,patron,habilitado,esPasaporte)
             data ['mensaje']= f"{nombres, apellidos}, te registraste con exito, verifica el codigo de validacion que se te envió a tu correo"
             enviarEmail(codigoVerificacion,correo)
-        
-        
-
-
     return render(request,'registration/registro.html',data)
-
 
 def verificacion(request):
     data = {
@@ -63,11 +58,7 @@ def verificacion(request):
     if request.method == 'POST':
         codigoVerificacion = request.POST.get('codigo')
         verificar(codigoVerificacion)
-
-
-    
     return render(request, 'registration/Verificacion.html', data)
-
 
 def generarCodigoVerificacion():
     conjunto = ['FJD6','JNC3','FZE7','QYT9','WMN1']
@@ -85,14 +76,10 @@ def autenticar(usuario,contra,patron):
     records = cursor.fetchone()
     return records
     
-    
-
 def verificar(codigo):
     cursor = connection.cursor()
     params = (codigo,)
     cursor.execute("{CALL dbo.SP_VERIFICAR_CODIGO(%s)}",params)
-
-
 
 def crearCliente(nombres, apellidos, usuario, correo, contrasena,
                 identificacion,celular,pais,codigoVerificacion, 

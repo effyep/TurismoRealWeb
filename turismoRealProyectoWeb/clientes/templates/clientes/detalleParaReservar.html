@@ -2,7 +2,49 @@
 {% load static %}
 
 {% block contenido %}
-{% for c in depto %}
-    <a>{{c.0}}</a>
-{% endfor %}
+{% if usuarioActual %}
+<h1>{{usuarioActual}}</h1>
+{% endif%}
+
+<section>      
+    {% for c in depto %} 
+    <h1 class="title">{{c.11}}, {{c.12}}</h1>
+    <div class="form-img">
+    
+    </div>
+    <form class="form-reserva" method ='POST'>
+        {% csrf_token %}
+        <h2 class="total">${{c.5}} CLP Por Noche</h2>
+        <div class="llegada">
+            Llegada
+            <input type="date" min="2022-10-19" max="0000-00-00" name="FechaLlegada">
+        </div>
+        <div class="salida">
+            Salida
+            <input type="date" min="2022-10-19" max="0000-00-00" name="FechaSalida">
+        </div>
+        <label>HUÉSPEDES</label>
+        <select name="Huespedes" id="personas">
+            <option value="cant 1">1</option>
+            <option value="cant 2">2</option>
+            <option value="cant 3">3</option>
+            <option value="cant 4">4</option>
+        </select>
+        {% endfor %}
+        
+        <h3 class="servicios">Servicios Extras</h3>
+        <h5>(opcional)</h5>
+        {% for s in servicios %}
+        <div class="service">{{s.1}}>
+            <input type="checkbox" value="{{s.0}}" name="checkbox">
+        </div>
+        {% endfor %}
+        <h2 class="form-total">${{totalReserva}} TOTAL RESERVA</h2>
+        <h2 class="form-abono">${{abono}} CLP Abono</h2>
+        <input type="submit" value="Reservar" class="btn-reservar">
+        {{mensaje}}
+        {{otro}}
+    </form>
+    
+</section>
 {% endblock %}
