@@ -9,8 +9,7 @@
     background-color: white;
     height: 390px;
     margin: auto;
-    width: 100%;
-    max-width: 590px;
+    width: 30%;
     border-radius: 20px;
     border: 1px solid rgb(210, 210, 210);
     /*box-shadow: 0 5px 10px -5px rgb(0 0  0/ 30%);*/
@@ -43,7 +42,7 @@ div input{
     border-color: rgb(210, 210, 210);
 
 }
-input[type="submit"]{
+.btn-Verificar{
     width: 40%;
     height: 50px;
     border: 1px solid;
@@ -55,4 +54,34 @@ input[type="submit"]{
     outline:none;
     margin-top: 50px;
     font-family: sans-serif;
+}
+
+@media (max-width:999px) {
+    .form_verificacion {
+        width: 320px;
+        height: 330px;
+    }
+
+    .Titulo {
+        width: 320px;
+        font-size: 25px;
+    }
+
+    .Parrafo {
+        width: 360px;
+        margin-left: -20px;
+        font-size: 20px;
+        margin-top: -20px;
+    }
+
+    .Codigo {
+        width: 380px;
+        margin-left: -30px;
+        align-items: center;
+    }
+
+    .btn-Verificar {
+        margin-top: 20px;
+        height: 40px;
+    }
 }

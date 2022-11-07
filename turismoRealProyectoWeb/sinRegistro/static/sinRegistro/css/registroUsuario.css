@@ -1,15 +1,14 @@
 *{
     margin: 0;
     padding: 0%;
-    box-sizing: border-box;
+    box-sizing: none;
 }
 
 .form-registro{
     background-color: white;
     margin: auto;
     height: 620px;
-    width: 45%;
-    /*max-width: 400px;*/
+    width: 25%;
     border-radius: 10px;
     border: 1px solid rgb(210, 210, 210);
     box-shadow: 0 5px 10px -5px rgb(0 0  0/ 30%);
@@ -21,6 +20,12 @@
     margin-bottom: .5em;
     border-bottom: 1px solid rgb(210, 210, 210);
 }
+
+.subtitulo {
+    text-align: justify;
+    margin-left: 40px;
+}
+
 h3{
     font-weight: 300;
     font-size: x-large;
@@ -31,14 +36,12 @@ h3{
 div input{
     width: 100%;
     padding: 10px;
-    text-align: left;
     margin-top: 6px;
     border-radius: 5px;
     border-style: solid;
-    border-color: rgb(210, 210, 210);
-   
+    border-color: rgb(210, 210, 210);  
 }
-input[type="submit"]{
+.btn-Registrarme {
     width: 45%;
     height: 50px;
     border: 1px solid;
@@ -58,24 +61,112 @@ input[type="submit"]{
     flex-wrap: wrap;
     justify-content: space-between;
 }
+
+.FechaNacimiento {
+    width: 43%;
+}
+
+.Celular {
+    width: 43%;
+    margin-right: 20px;
+}
+.Pais{
+    width: auto;
+
+}
+
+.Region {
+    width: 43%;
+}
+
+.Comuna {
+    width: 43%;
+    margin-right: 20px;
+}
+
 .EmailRegistro{
-    width: 100%;
+    width: 95%;
 }
 .NombresRegistro{
-    width: 100%;
+    width: 95%;
 }
 .ApellidosRegistro{
-    width: 100%;
+    width: 95%;
 }
 .Identificacion{
-    width: 100%;
+    width: 95%;
 }
 .Direccion{
-    width: 100%;
+    width: 95%;
 }
 .Contraseña{
-    width: 100%;
+    width: 95%;
 }
 .RepContraseña{
-    width: 100%;
+    width: 95%;
+}
+
+@media (max-width: 999px) {
+    
+    .form-registro{
+        position: center;
+        width: 80%;
+        height: 650px;
+    }
+
+    .subtitulo {
+        text-align: center;
+        margin-right: 26px;
+        margin-left: 26px;
+    }
+
+    .FechaNacimiento {
+        width: 39%;
+    }
+    
+    .Usuario {
+        width: 100%;
+        margin-right: 15px;
+    }
+
+    .Pais {
+        width: 100%;
+        margin-right: 15px;
+    }
+    .Celular {
+        width: 100%;
+        margin-right: 15px;
+    }
+    
+    .Region {
+        width: 100%;
+    }
+    
+    .Comuna {
+        width: 100%;
+        margin-right: 15px;
+    }
+    
+    
+    .EmailRegistro{
+        width: 95%;
+    }
+    .NombresRegistro{
+        width: 95%;
+    }
+    .ApellidosRegistro{
+        width: 95%;
+    }
+    .Identificacion{
+        width: 95%;
+    }
+    .Direccion{
+        width: 95%;
+    }
+    .Contraseña{
+        width: 95%;
+    }
+    .RepContraseña{
+        width: 95%;
+    }  
 }

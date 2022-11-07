@@ -16,9 +16,7 @@
             <label for="check" class="checkbtn">
                 <i class="fa-solid fa-bars"></i>
             </label>
-            
-                <img src={% static "sinRegistro/images\logo.png" %} alt="No se encuentra disponible" class="logo-img">
-            </a>
+            <img src={% static "sinRegistro/images\logo.png" %} alt="No se encuentra disponible" class="logo-img-nav">
             <ul class="nav-list">
                 <li><a href="{% url 'home' %}">Inicio</a></li>
                 <li><a href="{% url 'ComoReservar' %}">¿Como reservar?</a></li>
@@ -35,6 +33,7 @@
         </nav>
 
     </header>
+    <br>
     {% block contenido %}
     {% endblock %}
     

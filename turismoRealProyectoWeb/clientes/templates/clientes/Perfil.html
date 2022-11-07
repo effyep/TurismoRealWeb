@@ -1,11 +1,40 @@
 {% extends 'plantillaBase.html' %}
 {% load static %}
-    {% block contenido %}
-    <section class="container">
-        <article class="tarjeta">
-            <img class="imgTarjeta" src="{% static 'clientes/images/vinadelmar.jpg' %}" alt="">
-            <h2 id="descripcion">{{departamento.descripcion}}</h2>
-            <p>HOla</p>
-        </article>
-    </section>
-    {% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'clientes/css/misreservas.css' %}">
+{% endblock %}
+{% block contenido %}
+
+
+    {% for c in id %}
+    <form>
+        <h1 class="titulo">MIS RESERVAS</h1>
+        <div class="contenedor1">
+            <img class="img-vina" src="">
+            <div class="informacion">
+                <h2 class="subtitulo">{{c.10}}, {{c.11}}</h2>
+                <p>personas {{c.8}} | habitaciones {{c.8}} | baños {{c.7}}</p>
+                <button class="btn-Revisar"><a href="{% url 'revisarReserva' c.0 %}" >Revisar</a></button>
+                                                    
+                <h3 class="reserva">Informacion de reserva</h3>
+                <br>
+                <h3>
+                Servicios extras contratados:       ${{c.12}}
+                    <br>
+
+                    Valor del departamento:             ${{c.4}}
+                    <br>
+                    Monto pagado:                       ${{c.3}}
+                    <br>
+                    Llegada:                            {{c.1}}
+                    <br>
+                    Salida:                             {{c.2}}
+                </h3>
+                    
+            </div>
+        </div>
+    </form>
+    {% endfor %}
+
+</div>
+{% endblock %}

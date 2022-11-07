@@ -1,5 +1,6 @@
 from dataclasses import dataclass
-from http.client import HTTPResponse
+from django.http import HttpResponse
+
 from multiprocessing.sharedctypes import Value
 import random
 from django.shortcuts import render, redirect
@@ -33,7 +34,7 @@ def registro(request):
     }
 
     if request.method == 'POST':
-        
+        try:
             nombres = request.POST.get('nombres')
             apellidos = request.POST.get('apellidos')
             usuario = request.POST.get('usuario')
@@ -48,8 +49,13 @@ def registro(request):
             habilitado= 'Deshabilitado'
             esPasaporte= False
             crearCliente(nombres,apellidos,usuario,correo,contrasena,identificacion,celular,pais,codigoVerificacion,idTipoUsuario,patron,habilitado,esPasaporte)
-            data ['mensaje']= f"{nombres, apellidos}, te registraste con exito, verifica el codigo de validacion que se te envió a tu correo"
+            success= f"{nombres}, te registraste con exito, verifica el codigo de validacion que se te envió a tu correo"
             enviarEmail(codigoVerificacion,correo)
+            return HttpResponse(success)
+        except:
+            success="no amigo"
+            return HttpResponse(success)
+
     return render(request,'registration/registro.html',data)
 
 def verificacion(request):

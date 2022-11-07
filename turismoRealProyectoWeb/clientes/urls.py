@@ -7,7 +7,8 @@ urlpatterns = [
     path('logout' ,views.logout, name ='logout'),
     path('ComoReservar', views.ComoReservar, name='ComoReservar'),
     path('ReservaExitosa', views.reservaExitosa, name = 'reservaExitosa'),
-    path('ConfirmarReserva', views.solicitarReserva, name='confirmarReserva'),
+    path('ConfirmarReserva/<int:precioTotalServicios><int:precioTotalDias><int:idServicio><int:cantidadHuespedes>', views.solicitarReserva, name='confirmarReserva'),
     path('DetalleParaReservar/<int:item>', views.detalleParaReservar, name = 'detalleParaReservar'),
+    path('RevisarReserva/<int:item>', views.revisarReserva, name = 'revisarReserva'),
     path('Perfil', views.miPerfil, name='perfil')
 ]

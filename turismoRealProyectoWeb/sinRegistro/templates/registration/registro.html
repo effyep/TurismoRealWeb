@@ -4,14 +4,17 @@
     <title>RegistroUsuario</title>
     <link rel="stylesheet" href="{% static 'sinRegistro/css/RegistroUsuario.css' %}">
     <script src="{% static 'sinRegistro/js/validacionesRegistro.js' %}"></script>
+    <script src = "https://code.jquery.com/jquery-3.6.0.min.js"></script>
     {% endblock %}
 
     {% block contenido %}
-    <br></br>
-    <form method="POST" class="form-registro">{% csrf_token %}
+    
+    <form method="POST" class="form-registro" id="post-form">
+        {% csrf_token %}
         <h2 class="form_titulo">Registrate</h2>
         <br>
         <h3 class="subtitulo">Te damos la bienvenida a Turismo Real</h3>
+        
         <div class="contenedor">
             <div class="NombresRegistro"><input type="text" name="nombres" id="nombres" placeholder="Nombres" required ></div>
             <div class="ApellidosRegistro"><input type="text" name="apellidos" id="apellidos" placeholder="Apellidos" required ></div>
@@ -23,9 +26,34 @@
             <div class="Celular"><input type="text" name="celular" id="celular" placeholder="Celular" required></div>
             <div class="Pais"><input type="text" name="pais" id="pais" placeholder="Pais" required></div>
         </div> 
-
+        <h3 id="a"></h3>
         <input type="submit" value="Registrarme"  class="btn-Registrarme">
-        <h3 class="subtitulo">{{mensaje}}</h2>
     </form>
+    <script type="text/javascript">
+        $(document).on('submit', '#post-form', function (e) {
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: '/Registrarse',
+                data: {
+                    nombres: $('#nombres').val(),
+                    apellidos: $('#apellidos').val(),
+                    usuario: $('#usuario').val(),
+                    email: $('#email').val(),
+                    contraseña: $('#contraseña').val(),
+                    repcontraseña: $('#repcontraseña').val(),
+                    identificacion: $('#identificacion').val(),
+                    celular: $('#celular').val(),
+                    pais: $('#pais').val(),
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                },
+                success: function (data) {
+                    $("#a").html(data);
+                }
+                
+            })
+        })
+
+    </script>
     <br>
     {% endblock %}
