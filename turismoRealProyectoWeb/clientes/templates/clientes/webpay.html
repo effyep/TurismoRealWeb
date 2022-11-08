@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'clientes/css/PagoView.css' %}">
+</head>
+<body>
+    <div>
+        <div>
+            
+            <img src={% static 'clientes/images/WebPay.png' %} alt="No se encuentra disponible" class="logo-webpay">
+        </div>
+        <div class="form-simulacion">
+            <div class="form-tipopago">
+                <div class="titulo1">
+                    <h5 >Estás pagando en:</h5>
+                    <img src={% static 'clientes/images/Flow.png' %} alt="No se encuentra disponible" class="logo-flow">
+                </div>
+                <div class="titulo2">
+                    <h5 >Monto a pagar:</h5>
+                    <h2>$487.900</h2>
+                </div>
+                <div>
+                    <div class="FormaPago1">
+                        <img src={% static 'clientes/images/OnePay.png' %} alt="No se encuentra disponible" class="logo-onepay">
+                    </div>
+                    <input type="radio" value="" class="btn-onepay">
+                    <br>
+                    <div class="FormaPago2">
+                        <img src={% static 'clientes/images/Debito.png' %} alt="No se encuentra disponible" class="logo-debito">
+                        <p>Debito</p>
+                    </div>
+                    <input type="radio" value="" class="btn-debito">
+                    <br>
+                    <div class="FormaPago3">
+                        <img src={% static 'clientes/images/Credito.png' %} alt="No se encuentra disponible" class="logo-credito">
+                        <p>Crédito</p>
+                    </div>
+                    <input type="radio" value="" class="btn-credito">
+                    <br>
+                    <div class="FormaPago4">
+                        <img src="Imagenes\Prepago.png" alt="No se encuentra disponible" class="logo-prepago">
+                        <p>Prepago</p>
+                    </div>
+                    <input type="radio" value="" class="btn-prepago">
+                </div>
+                <div class="anular">
+                    <a href="">< Anular compra y volver al comercio</a>
+                </div>
+                
+            </div>
+            <div class="form-banco">
+                <h4>Ingresa los datos de tu tarjeta</h4>
+                <p>Banco</p>
+                <select name="bancos" id="bancos">
+                    <option selected disabled>Seleccione un banco</option>
+                    <option value="banco santander">BANCO SANTANDER</option>
+                    <option value="banco santander banefe">BANCO SANTANDER BANEFE</option>
+                    <option value="banco itau">BANCO ITAÚ</option>
+                    <option value="bci tbanc">BCI-TBANC</option>
+                    <option value="banco falabella">BANCO FALABELLA</option>
+                    <option value="corpbanca">CORPBANCA</option>
+                    <option value="banco estado">BANCO ESTADO</option>
+                    <option value="banco credito e inversiones">BANCO DE CREDITO E INVERSIONES</option>
+                    <option value="banco de chile-edwards-credichile">BANCO DE CHILE-EDWARDS-CREDICHILE</option>
+                </select>
+                <input type="text" name="Rut" id="Rut" placeholder="RUT" class="rut"required>
+                <input type="submit" value="Pagar" class="btn-pagar">
+                <div class="form-minilogo">
+                    <img src="Imagenes\logowebpay.png" alt="No se encuentra disponible" class="logo-pay">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>  
+</html>

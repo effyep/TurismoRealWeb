@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 from django.db import connection
 from django.http import JsonResponse
+from django.contrib import messages
 import datetime
 
 
@@ -21,6 +22,14 @@ def home(request):
         data ['resultados']=resultados
         print(resultados)
     return render(request, 'clientes/Principal.html', data)
+
+def webpay(request):
+    data = {}
+    if 'usuario_id' in request.session:
+        usuarioActual = request.session['usuario']
+        data ['usuarioActual']= usuarioActual
+        idUsuarioActual = request.session['usuario_id']
+    return render(request,'clientes/webpay.html')
 
 def miPerfil(request):
     data ={
@@ -46,6 +55,8 @@ def revisarReserva(request,item):
         data ['usuarioActual']= usuarioActual
     if request.method == 'POST':
         cancelarReserva(item)
+        return redirect('perfil')
+        
         
     return render(request, 'clientes/revisarReserva.html',data)
 
@@ -73,6 +84,8 @@ def detalleParaReservar(request,item):
         'servicios':datosServicio()
     }
     idUsuario = request.session['usuario_id']
+    print(item)
+    
     if 'usuario_id' in request.session:
         usuarioActual = request.session['usuario']
         data ['usuarioActual']= usuarioActual
@@ -126,8 +139,10 @@ def detalleParaReservar(request,item):
             #el valor del abono
             abono = calcularAbono(precioTotalReserva)
             #valores q se muestran en el front
+            data['abono']=abono
+            data['TotalReserva']=precioTotalReserva
 
-            crearPosibleReserva(inicio,fechaSalida,precioNoche,item,1,precioTotalReserva)
+            crearPosibleReserva(inicio,fechaSalida,precioNoche,item,idUsuario,precioTotalReserva)
             pr=obtenerIDPosibleReserva(idUsuario)
             pr= extraerValorTupla(pr[0],0)
             data['IDPR']= pr
@@ -142,7 +157,7 @@ def solicitarReserva(request,item):
         'datosPosibleReserva': obtenerDatosPosibleReserva(item)
     }
     datosPosibleReserva = obtenerDatosPosibleReserva(item)
-    precioTotal = extraerValorTupla(datosPosibleReserva[0],12)
+    precioTotal = extraerValorTupla(datosPosibleReserva[0],10)
     precioAbono= calcularAbono(precioTotal)
     data['abono'] = precioAbono
     if 'usuario_id' in request.session:
@@ -156,10 +171,12 @@ def solicitarReserva(request,item):
         if valor == precioTotal:
             concretarReservaCompleto(item,valor)
             crearBoletaPagoCompleto('Debito','CHILE','C-'+str(item),valor,item)
+            return redirect('webpay')
         
         else:
             concretarReservaAbono(item,valor)
             crearBoletaPagoAbono('Debito','CHILE','C-'+str(item),valor,item)
+            return redirect('webpay')
 
 
 

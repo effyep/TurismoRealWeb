@@ -10,5 +10,6 @@ urlpatterns = [
     path('ConfirmarReserva/<int:item>', views.solicitarReserva, name='confirmarReserva'),
     path('DetalleParaReservar/<int:item>', views.detalleParaReservar, name = 'detalleParaReservar'),
     path('RevisarReserva/<int:item>', views.revisarReserva, name = 'revisarReserva'),
-    path('Perfil', views.miPerfil, name='perfil')
+    path('Perfil', views.miPerfil, name='perfil'),
+    path('WebPaySimilacion', views.webpay, name='webpay')
 ]

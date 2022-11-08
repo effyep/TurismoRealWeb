@@ -2,6 +2,7 @@
 {% load static %}
 {% block head %}
     <link rel="stylesheet" href="{% static 'clientes/css/misreservas.css' %}">
+
 {% endblock %}
 {% block contenido %}
 
@@ -13,15 +14,15 @@
         <div class="contenedor1">
             <img class="img-vina" src="">
             <div class="informacion">
-                <h1>Estado:{{c.14}}</h3>
-                <h2 class="subtitulo">{{c.10}}, {{c.11}}</h2>
-                <p>personas {{c.8}} | habitaciones {{c.8}} | baños {{c.7}}</p>
+                <h1>Estado:{{c.12}}</h3>
+                <h2 class="subtitulo">{{c.9}}, {{c.10}}</h2>
+                <p>personas {{c.6}} | habitaciones {{c.6}} | baños {{c.5}}</p>
                 <button class="btn-Revisar"><a href="{% url 'revisarReserva' c.0 %}" >Revisar</a></button>
                                                     
                 <h3 class="reserva">Informacion de reserva</h3>
                 <br>
                 <h3>
-                Servicios extras contratados:       ${{c.12}}
+                
                     <br>
 
                     Valor del departamento:             ${{c.4}}

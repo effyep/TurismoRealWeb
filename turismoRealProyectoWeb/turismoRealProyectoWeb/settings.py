@@ -28,6 +28,7 @@ SECRET_KEY = 'django-insecure-wud&oq=hzb4nwnu@t85z6lrany29@6usya1hrtil^sctc12atr
 DEBUG = True
 
 ALLOWED_HOSTS = []
+MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"
 
 
 # Application definition
@@ -86,7 +87,7 @@ DATABASES = {
             'NAME': 'TurismoReal',
             'USER': '',
             'PASSWORD': '',
-            'HOST': 'FELIP',
+            'HOST': 'EC2AMAZ-KACC40T',
             'PORT': '',
             'OPTIONS': {
                 'driver': 'ODBC Driver 17 for SQL Server',

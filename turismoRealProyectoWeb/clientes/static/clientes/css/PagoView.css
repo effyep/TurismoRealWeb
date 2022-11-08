@@ -1,0 +1,234 @@
+.logo-webpay {
+    width: 150px;
+    height: 50px;
+    margin-left: 300px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.form-simulacion {
+    width: 1200px;
+    height: 700px;
+    background: #ebebec;
+    border-radius: 20px;
+    border: solid 1px rgb(210, 210, 210);
+    margin-left: 350px;
+}
+
+.form-tipopago {
+    width: 600px;
+    height: 700px;
+    background: #fff;
+    border-radius: 20px;
+    border: solid 1px rgb(210, 210, 210);
+}
+
+.titulo1 {
+    font-size: 20px;
+    font-family: sans-serif;
+    position: relative;
+    text-align: left;
+    margin-left: 100px;
+    margin-top: 120px;
+}
+
+.logo-flow {
+    position: relative;
+    margin-top: -20px;
+    width: 120px;
+    height: 70px;
+}
+
+.titulo2 {
+    font-size: 20px;
+    font-family: sans-serif;
+    position: relative;
+    margin-top: -130px;
+    text-align: left;
+    margin-left: 320px;
+}
+
+/*pago1*/
+.FormaPago1 {
+    width: 200px;
+    height: 120px;
+    margin-left: 100px;
+    text-align: center;
+    border-radius: 20px;
+    border: solid 1px rgb(210, 210, 210);
+}
+
+.logo-onepay {
+    margin-top: 2px;
+    width: 150px;
+    height: 100px;
+}
+
+/*btn onepay*/
+.btn-onepay {
+    font-size: 30px;
+    color: #000;
+    float: right;
+    margin-top: -110px;
+    line-height: 80px;
+    margin-right: 310px;
+    cursor: pointer;
+}
+
+/*btn debito*/
+.btn-debito {
+    font-size: 30px;
+    color: #000;
+    float: right;
+    margin-top: -110px;
+    line-height: 80px;
+    margin-right: 90px;
+    cursor: pointer;
+}
+
+/*btn credito*/
+.btn-credito {
+    font-size: 30px;
+    color: #000;
+    float: right;
+    margin-top: -110px;
+    line-height: 80px;
+    margin-right: 90px;
+    cursor: pointer;
+}
+
+/*btn prepago*/
+.btn-prepago {
+    font-size: 30px;
+    color: #000;
+    float: right;
+    margin-top: -110px;
+    line-height: 80px;
+    margin-right: 310px;
+    cursor: pointer;
+}
+
+
+/*Pago2*/
+.FormaPago2 {
+    width: 200px;
+    height: 120px;
+    text-align: center;
+    margin-left: 320px;
+    margin-top: -140px;
+    border-radius: 20px;
+    border: solid 1px rgb(210, 210, 210);
+}
+
+.logo-debito {
+    width: 60px;
+    height: 60px;
+}
+
+/*Pago3*/
+.FormaPago3 {
+    width: 200px;
+    height: 120px;
+    margin-left: 100px;
+    text-align: center;
+    border-radius: 20px;
+    border: solid 1px rgb(210, 210, 210);
+}
+
+.logo-credito {
+    width: 60px;
+    height: 60px;
+}
+
+/*Pago4*/
+.FormaPago4 {
+    width: 200px;
+    height: 120px;
+    text-align: center;
+    margin-top: -140px;
+    margin-left: 320px;
+    border-radius: 20px;
+    border: solid 1px rgb(210, 210, 210);
+}
+
+.logo-prepago {
+    width: 60px;
+    height: 60px;
+}
+
+.anular {
+    margin-left: 100px;
+    margin-top: 50px;
+    font-family: sans-serif;
+    font-size: 15px;
+}
+
+a {
+    text-decoration: none;
+    color: rgb(45, 45, 223);
+}
+
+.form-banco {
+    font-family: sans-serif;
+    text-align: center;
+    margin-top: -670px;
+    margin-left: 550px;
+}
+
+.form-banco p {
+    margin-left: -250px;
+}
+
+select {
+    outline: 0;
+    position: relative;
+    box-shadow: none;
+    display: flex;
+    width: 350px;
+    height: 40px;
+    padding: 5px;
+    padding-top: -15px;
+    margin-left: 175px;
+    border-radius: 10px;
+    border: solid 1px rgb(210, 210, 210);
+    background: solid #ebebec;
+    background-image: none;
+}
+
+.rut {
+    width: 350px;
+    height: 30px;
+    margin-top: 50px;
+    margin-left: 60px;
+    font-family: sans-serif;
+    border-radius: 5px;
+    border: solid 1px rgb(210, 210, 210);
+    background: #f3f3f5;
+}
+
+.btn-pagar {
+    position: relative;
+    width: 60%;
+    height: 50px;
+    border: 1px solid;
+    background: rgb(176, 37, 174);
+    border-radius: 6px;
+    font-size: 18px;
+    color: #F5F5F5;
+    cursor:pointer;
+    outline:none;
+    font-family: sans-serif;
+    margin-bottom: 314px;
+    margin-left: 70px;
+    position: relative;
+}
+
+.form-minilogo {
+    margin-top: -280px;
+    margin-left: 60px;
+}
+
+.logo-pay {
+    width: 150px;
+    height: 50px;
+}

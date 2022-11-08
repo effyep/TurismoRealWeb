@@ -8,7 +8,7 @@
     {% endblock %}
 
     {% block contenido %}
-    
+
     <form method="POST" class="form-registro" id="post-form">
         {% csrf_token %}
         <h2 class="form_titulo">Registrate</h2>
@@ -29,31 +29,6 @@
         <h3 id="a"></h3>
         <input type="submit" value="Registrarme"  class="btn-Registrarme">
     </form>
-    <script type="text/javascript">
-        $(document).on('submit', '#post-form', function (e) {
-            e.preventDefault();
-            $.ajax({
-                type: 'POST',
-                url: '/Registrarse',
-                data: {
-                    nombres: $('#nombres').val(),
-                    apellidos: $('#apellidos').val(),
-                    usuario: $('#usuario').val(),
-                    email: $('#email').val(),
-                    contraseña: $('#contraseña').val(),
-                    repcontraseña: $('#repcontraseña').val(),
-                    identificacion: $('#identificacion').val(),
-                    celular: $('#celular').val(),
-                    pais: $('#pais').val(),
-                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
-                },
-                success: function (data) {
-                    $("#a").html(data);
-                }
-                
-            })
-        })
 
-    </script>
     <br>
     {% endblock %}

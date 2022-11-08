@@ -8,7 +8,9 @@ from django.db import connection
 from django.core.mail import EmailMessage
 from django.conf import settings
 from django.template.loader import render_to_string
+from django.contrib import messages
 import time
+
 
 
 
@@ -51,9 +53,11 @@ def registro(request):
             crearCliente(nombres,apellidos,usuario,correo,contrasena,identificacion,celular,pais,codigoVerificacion,idTipoUsuario,patron,habilitado,esPasaporte)
             success= f"{nombres}, te registraste con exito, verifica el codigo de validacion que se te envió a tu correo"
             enviarEmail(codigoVerificacion,correo)
-            return HttpResponse(success)
+            return redirect('verificacion')
+
+            
         except:
-            success="no amigo"
+            success="No pudimos registrarte, revisa tus datos e intentalo nuevamente"
             return HttpResponse(success)
 
     return render(request,'registration/registro.html',data)

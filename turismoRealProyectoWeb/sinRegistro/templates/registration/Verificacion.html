@@ -3,10 +3,11 @@
     {% load static %}
     {% block head %}
     <link rel="stylesheet" href="{% static 'sinRegistro/css/estilos_verificacion.css' %}">
+
     <title>Verificacion</title>
     {% endblock %}
 
-    {% block contenido %}
+{% block contenido %}
     <form action="" method="POST" class="form_verificacion">{% csrf_token %}      
             <h3 class="Titulo">Verificación de correo</h3>
             <br/>
@@ -14,5 +15,5 @@
             <div class="Codigo"><input type="text" name="codigo" id="codigo" placeholder="Ingrese código" required ></div>
             <input type="submit" value="Verificar" class="btn-Verificar"> 
     </form>
-    {{mensaje}}
+
     {% endblock %}
