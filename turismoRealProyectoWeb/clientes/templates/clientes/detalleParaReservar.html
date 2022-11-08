@@ -101,12 +101,15 @@
         
         <h2 class="form-total">{{totalReserva}} TOTAL RESERVA</h2>
         <h2 class="form-abono">${{abono}} CLP Abono</h2>
-        <input type="submit" value="Reservar" class="btn-reservar"><a  href="{% url 'confirmarReserva'%}" >Reservar</a></input>
+        
+        <input type="submit" value="Consultar" class="btn-reservar">
+        {% if IDPR %}
+        <a  href="{% url 'confirmarReserva' IDPR %}" >Reservar</a>
+        {% endif %}
         
 
     </form>
     <h3>{{mensaje}}</h3>
-    <h3 id="a">{{mensaje}}</h3>
 </section>
 
 

@@ -1,7 +1,8 @@
 from django.shortcuts import render,redirect
 from django.db import connection
 from django.http import JsonResponse
-from  .posibleReserva import PosibleReserva
+import datetime
+
 
 # Create your views here.
 
@@ -43,6 +44,8 @@ def revisarReserva(request,item):
         
         usuarioActual = request.session['usuario']
         data ['usuarioActual']= usuarioActual
+    if request.method == 'POST':
+        cancelarReserva(item)
         
     return render(request, 'clientes/revisarReserva.html',data)
 
@@ -69,6 +72,7 @@ def detalleParaReservar(request,item):
         'depto': datosDepto(item),
         'servicios':datosServicio()
     }
+    idUsuario = request.session['usuario_id']
     if 'usuario_id' in request.session:
         usuarioActual = request.session['usuario']
         data ['usuarioActual']= usuarioActual
@@ -78,6 +82,8 @@ def detalleParaReservar(request,item):
         fechaSalida  = request.POST.get('fechaSalida')
         print(inicio)
         print(fechaSalida)
+        
+        
         cantHuespedes = request.POST.get('Huespedes')
         # trae valores si en algun dia de los seleccionados ya existe una reserva
         disponibilidad =disponibilidadFecha(item,inicio,fechaSalida) 
@@ -120,30 +126,44 @@ def detalleParaReservar(request,item):
             #el valor del abono
             abono = calcularAbono(precioTotalReserva)
             #valores q se muestran en el front
-            data['abono'] = abono
-            data['totalReserva'] = precioTotalReserva
+
+            crearPosibleReserva(inicio,fechaSalida,precioNoche,item,1,precioTotalReserva)
+            pr=obtenerIDPosibleReserva(idUsuario)
+            pr= extraerValorTupla(pr[0],0)
+            data['IDPR']= pr
             
-            DatosPosibleReserva= {
-                'precioTotalServicios': precioTotalServicios,
-                'precioTotalDias':precioTotalDias,
-                'serviciosID': idServicio,
-                'cantHuespedes':cantHuespedes
-            }
-            data['preserva']= precioTotalServicios,precioTotalDias,idServicio,cantHuespedes
-            print(DatosPosibleReserva)
-            pr = PosibleReserva(precioTotalServicios,precioTotalDias,idServicio,cantHuespedes)
-            print(pr.cantHuespedes)
 
             
             #diccc = {'idServicios':idServicio, 'idDepto':item,'fechas':[fechaLlegada,fechaSalida],'totalDias':totalDias,'precioTotalDias':precioTotalDias,'precioServicios':precioTotalServicios,'precioReserva':precioTotalReserva,'totalAbono':abono}
     return render(request, 'clientes/detalleParaReservar.html' ,data)
 
-def solicitarReserva(request):
+def solicitarReserva(request,item):
     data = {
+        'datosPosibleReserva': obtenerDatosPosibleReserva(item)
     }
+    datosPosibleReserva = obtenerDatosPosibleReserva(item)
+    precioTotal = extraerValorTupla(datosPosibleReserva[0],12)
+    precioAbono= calcularAbono(precioTotal)
+    data['abono'] = precioAbono
     if 'usuario_id' in request.session:
         usuarioActual = request.session['usuario']
         data ['usuarioActual']= usuarioActual
+
+    if request.method == 'POST':
+        
+        valor = request.POST.get('total')
+        print(valor)
+        if valor == precioTotal:
+            concretarReservaCompleto(item,valor)
+            crearBoletaPagoCompleto('Debito','CHILE','C-'+str(item),valor,item)
+        
+        else:
+            concretarReservaAbono(item,valor)
+            crearBoletaPagoAbono('Debito','CHILE','C-'+str(item),valor,item)
+
+
+
+        #print(valor)
     return render(request, 'clientes/SolicitarReserva.html',data)
 
 def logout(request):
@@ -163,7 +183,7 @@ def EncontrarDepto(cantidadP, ubicacion):
 
 def listarRegion():
     cursor = connection.cursor()
-    cursor.execute("{CALL dbo.SP_P_CargarRegion}")
+    cursor.execute("{CALL dbo.SP_RE_CargarRegion}")
     resultado = cursor.fetchall()
     lista = []
     for c in resultado:
@@ -236,3 +256,50 @@ def servicioExtrasContratados(idUsuario, idReserva):
     resultados = cursor.fetchall()
     return resultados
     
+
+def crearPosibleReserva(fechaDesde,fechaHasta,precioNocheDepto,idDepto,idUsuario,precioTotalReserva):
+    cursor = connection.cursor()
+    params=(fechaDesde,fechaHasta,precioNocheDepto,idDepto,idUsuario,precioTotalReserva)
+    cursor.execute("{CALL dbo.SP_CrearPosibleReserva(%s,%s,%s,%s,%s,%s)}",params)
+
+def obtenerIDPosibleReserva(idUsuario):
+
+    cursor = connection.cursor()
+    params=(idUsuario,)
+    cursor.execute("{CALL dbo.SP_ObtenerIDPosibleReserva(%s)}",params)
+    resultado = cursor.fetchall()
+    return resultado
+
+def obtenerDatosPosibleReserva(idPosibleReserva):
+    cursor = connection.cursor()
+    params = (idPosibleReserva,)
+    cursor.execute("{CALL dbo.SP_ObtenerDatosPosibleReserva(%s)}",params)
+    resultados = cursor.fetchall()
+    return resultados
+
+def concretarReservaCompleto(idPosibleReserva, monto):
+    cursor = connection.cursor()
+    params=(idPosibleReserva,monto)
+    cursor.execute("{CALL dbo.SP_ConcretarReservaCompleto(%s,%s)}",params)
+
+
+def concretarReservaAbono(idPosibleReserva, monto):
+
+    cursor = connection.cursor()
+    params=(idPosibleReserva,monto)
+    cursor.execute("{CALL dbo.SP_ConcretarReservaAbono(%s,%s)}",params)
+
+def crearBoletaPagoCompleto(medioPago ,banco ,comprobante,monto,idReserva):
+    cursor = connection.cursor()
+    params=(medioPago ,banco ,comprobante,monto,idReserva)
+    cursor.execute("{CALL dbo.SP_CrearBoletaCompleto(%s,%s,%s,%s,%s)}",params)
+
+def crearBoletaPagoAbono(medioPago ,banco ,comprobante,monto,idReserva):
+    cursor = connection.cursor()
+    params=(medioPago ,banco ,comprobante,monto,idReserva)
+    cursor.execute("{CALL dbo.SP_CrearBoletaAbono(%s,%s,%s,%s,%s)}",params)
+
+def cancelarReserva(idReserva):
+    cursor=connection.cursor()
+    params=(idReserva,)
+    cursor.execute("{CALL dbo.SP_CancelarReserva(%s)}",params)

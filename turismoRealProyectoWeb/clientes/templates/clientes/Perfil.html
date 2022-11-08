@@ -6,12 +6,14 @@
 {% block contenido %}
 
 
-    {% for c in id %}
+    
     <form>
         <h1 class="titulo">MIS RESERVAS</h1>
+        {% for c in id %}
         <div class="contenedor1">
             <img class="img-vina" src="">
             <div class="informacion">
+                <h1>Estado:{{c.14}}</h3>
                 <h2 class="subtitulo">{{c.10}}, {{c.11}}</h2>
                 <p>personas {{c.8}} | habitaciones {{c.8}} | baños {{c.7}}</p>
                 <button class="btn-Revisar"><a href="{% url 'revisarReserva' c.0 %}" >Revisar</a></button>
