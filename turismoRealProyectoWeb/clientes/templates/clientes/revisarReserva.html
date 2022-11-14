@@ -11,10 +11,10 @@
     
         <div class="contenedor">
             <div class="contenedor-imagenes">
-            <img src="img/vina.jpg" class="principal" width="700" height="450">
-            <img src="img/vina2.jpg" class="secundaria" width="230" height="230">
-            <img src="img/vina3.jpg" class="secundaria" width="230" height="230">
-            <img src="img/vina4.jpg" class="secundaria" width="230" height="230">
+            <img src="{% static 'clientes/images/0.jpg'%}" class="principal" width="700" height="450">
+            <img src="{% static 'clientes/images/1.jpg'%}" width="230" height="230">
+            <img src="{% static 'clientes/images/2.jpg'%}" width="230" height="230">
+            <img src="{% static 'clientes/images/6.jpg'%}" width="230" height="230">
             </div>
             <form method="POST">
                 {% csrf_token %}
@@ -34,7 +34,7 @@
                 <br>
                 <div class="boton">
                 
-                {% if c.17 != 'Cancelado' %}
+                {% if c.15 != 'Cancelado' %}
                 <input type="submit" value="Cancelar reserva" class="btn-Cancelar">
                 {% endif %}
                 </div>

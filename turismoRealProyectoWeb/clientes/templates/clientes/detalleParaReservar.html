@@ -8,6 +8,7 @@
 {% block head %}
 
 <link rel="stylesheet" href="{% static 'clientes/css/detalleParaReservar.css' %}"></link>
+<script src="{% static 'clientes/js/detalleParaReservar.js' %}"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 {% endblock %}
 
@@ -15,11 +16,11 @@
     {% for c in depto %}     
     <h1 class="title">{{c.10}}, {{c.11}}</h1>
     <div class="galeria">
-        <a href="#img1"><img src="Imagenes\gato.png"></a>
-        <a href="#img2"><img src="Imagenes\gatonojao.jpg"></a>
-        <a href="#img3"><img src="Imagenes\gatotierno.jpg"></a>
-        <a href="#img4"><img src="Imagenes\ok.jpg"></a>
-        <a href="#img5"><img src="Imagenes\perrosamurai.jpg"></a>
+        <a href="#img1"><img src="{% static 'clientes/images/0.jpg'%}"></a>
+        <a href="#img2"><img src="{% static 'clientes/images/1.jpg'%}"></a>
+        <a href="#img3"><img src="{% static 'clientes/images/2.jpg'%}"></a>
+        <a href="#img4"><img src="{% static 'clientes/images/4.jpg'%}"></a>
+        <a href="#img5"><img src="{% static 'clientes/images/6.jpg'%}"></a>
     </div>
     <div class="modal" id="img1">
         <h3>Imagen 1</h3>
@@ -99,19 +100,32 @@
         
         {% endfor %}
         
-        <h2 class="form-total">${{TotalReserva}}CLP TOTAL RESERVA</h2>
+        <h2 class="form-total">${{TotalReserva}} CLP TOTAL RESERVA</h2>
         <br>
         <h2 class="form-abono">${{abono}} CLP Abono</h2>
+    
         
-        <input type="submit" value="Consultar" class="btn-reservar">
         {% if IDPR %}
-        <button class="btn-reservar"><a  href="{% url 'confirmarReserva' IDPR %}" >Reservar</a></button>
+        <button class="btn-reservar"><a  href="{% url 'confirmarReserva' IDPR %}" class="acolor" >Reservar</a></button>
+        {% else %}
+        <input type="submit" value="Consultar" class="btn-reservar">
         {% endif %}
         
 
     </form>
-    <h3>{{mensaje}}</h3>
+  
+    <h3 id="avisoOcupada">{{ocupada}}</h3>
+
 </section>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 
 {% endblock %}

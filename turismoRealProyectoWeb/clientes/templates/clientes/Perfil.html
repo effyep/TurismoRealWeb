@@ -12,9 +12,12 @@
         <h1 class="titulo">MIS RESERVAS</h1>
         {% for c in id %}
         <div class="contenedor1">
-            <img class="img-vina" src="">
+            <img class="img-vina" src="{% static 'clientes/images/resultado.jpg'%}">
             <div class="informacion">
-                <h1>Estado:{{c.12}}</h3>
+                
+                <h1 class='{{c.12}}'>{{c.12}}</h3>
+                
+
                 <h2 class="subtitulo">{{c.9}}, {{c.10}}</h2>
                 <p>personas {{c.6}} | habitaciones {{c.6}} | baños {{c.5}}</p>
                 <button class="btn-Revisar"><a href="{% url 'revisarReserva' c.0 %}" >Revisar</a></button>
@@ -25,7 +28,7 @@
                 
                     <br>
 
-                    Valor del departamento:             ${{c.4}}
+                    Valor del departamento:${{c.4}}
                     <br>
                     Monto pagado:                       ${{c.3}}
                     <br>
@@ -37,6 +40,8 @@
             </div>
         </div>
     </form>
+    <br>
+    <br>
     {% endfor %}
 
 </div>

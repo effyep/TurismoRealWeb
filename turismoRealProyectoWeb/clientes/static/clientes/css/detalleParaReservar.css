@@ -11,8 +11,17 @@
     text-align: center;
     color: rgb(95, 2, 100);
 }
+.Cancelado{
+    text-align: justify;
+    font-size: 25px;
+    margin-left: 30px;
+    margin-top: 60px;
+    color: rgb(95, 2, 100);
+}
 
-
+.acolor{
+    color: #fff;
+}
 .form-img {
     text-align: center;
 }

@@ -1,8 +1,8 @@
 from django.shortcuts import render,redirect
 from django.db import connection
-from django.http import JsonResponse
+from django.http import JsonResponse,HttpResponse
 from django.contrib import messages
-import datetime
+from .models import Usuarios
 
 
 # Create your views here.
@@ -14,6 +14,8 @@ def home(request):
     if 'usuario_id' in request.session:
         usuarioActual = request.session['usuario']
         data ['usuarioActual']= usuarioActual
+
+    
 
     if request.method == 'POST':
         region = request.POST.get('Regiones')
@@ -70,6 +72,16 @@ def ComoReservar(request):
     return render(request, 'clientes/ComoReservar.html', data)
     
 
+def listarUsuarios(request):
+    usuarios = []
+   # for c in Usuarios.objects.all():
+    #    usuario = {'usuario':c.nombres}
+     #   usuarios.append(usuario)
+    data = list(Usuarios.objects.values('usuario','correo','identificacion','celular'))
+    return JsonResponse(data, safe = False)
+
+
+
 def reservaExitosa(request):
     data = {}
     if 'usuario_id' in request.session:
@@ -90,6 +102,8 @@ def detalleParaReservar(request,item):
         usuarioActual = request.session['usuario']
         data ['usuarioActual']= usuarioActual
 
+    
+
     if request.method == 'POST':
         inicio = request.POST.get('inicio')
         fechaSalida  = request.POST.get('fechaSalida')
@@ -108,7 +122,7 @@ def detalleParaReservar(request,item):
         for c in disponibilidad:
             #si la contiene se notifica
             if c[0] != None:
-                data['mensaje']=f'ya existe una reserva para este departamento entre {c[1]} y {c[2]}, ademas se debe considerar dos dias despues del termino para mantenimiento. por favor, escoge otra fecha'
+                data['ocupada']=f'ya existe una reserva para este departamento entre {c[1]} y {c[2]}, ademas se debe considerar dos dias despues del termino para mantenimiento. por favor, escoge otra fecha'
                 break
         else:
             #obtengo una lista de los id's de servicio seleccionados en los input 'checkbox'
@@ -157,7 +171,7 @@ def solicitarReserva(request,item):
         'datosPosibleReserva': obtenerDatosPosibleReserva(item)
     }
     datosPosibleReserva = obtenerDatosPosibleReserva(item)
-    precioTotal = extraerValorTupla(datosPosibleReserva[0],10)
+    precioTotal = extraerValorTupla(datosPosibleReserva[0],12)
     precioAbono= calcularAbono(precioTotal)
     data['abono'] = precioAbono
     if 'usuario_id' in request.session:

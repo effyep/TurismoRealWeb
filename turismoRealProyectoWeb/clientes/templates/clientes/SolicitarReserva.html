@@ -25,11 +25,11 @@
             <div class="form_pago" >
                 <div>
                     <h2 class="pago1">Pago único</h2>
-                    <input name="total" type="radio" value="{{c.10}}">${{c.10}}  CLP
+                    <input name="total" type="radio" value="{{c.10}}">${{c.12}}  CLP
                     <p>Paga el total ahora y listo.</p>
                     <h2 class="pago2">Paga una parte ahora y otra más adelante</h2>
                     <input name='total'type="radio" value="{{abono}}">${{abono}} CLP>
-                    <p>Paga $48.790 ahora y el resto ($439.110) se te cobrará automaticamente a la misma forma de pago
+                    <p>Paga ${{abono}} ahora y el resto (${{c.12}}) se te cobrará automaticamente a la misma forma de pago
                         el 5 de abril de 2023. Sin tarifas adicionales.
                     </p>
                     <p class="link"><a href="">Más información</a></p>

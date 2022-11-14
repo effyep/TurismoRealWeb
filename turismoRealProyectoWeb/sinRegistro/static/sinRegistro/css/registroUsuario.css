@@ -4,6 +4,16 @@
     box-sizing: none;
 }
 
+.mensajeError{
+    color: rgb(82, 0, 0);
+    display: block;
+    text-align: center;
+}
+
+.error{
+    color: red;
+    display: block;
+}
 .form-registro{
     background-color: white;
     margin: auto;

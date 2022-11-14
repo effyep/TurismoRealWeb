@@ -10,9 +10,9 @@ from django.db import models
 
 class Acompanantes(models.Model):
     idacompanantes = models.AutoField(db_column='idAcompanantes', primary_key=True)  # Field name made lowercase.
-    nombres = models.CharField(max_length=50, db_collation='SQL_Latin1_General_CP1_CI_AS')
-    apellidos = models.CharField(max_length=50, db_collation='SQL_Latin1_General_CP1_CI_AS')
-    identificacion = models.CharField(unique=True, max_length=20, db_collation='SQL_Latin1_General_CP1_CI_AS')
+    nombres = models.CharField(max_length=50, db_collation='Modern_Spanish_CI_AS')
+    apellidos = models.CharField(max_length=50, db_collation='Modern_Spanish_CI_AS')
+    identificacion = models.CharField(unique=True, max_length=20, db_collation='Modern_Spanish_CI_AS')
     idreserva = models.ForeignKey('Reservas', models.DO_NOTHING, db_column='idReserva', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
@@ -22,9 +22,9 @@ class Acompanantes(models.Model):
 
 class Artefactos(models.Model):
     idartefactos = models.AutoField(db_column='idArtefactos', primary_key=True)  # Field name made lowercase.
-    descripcion = models.CharField(max_length=50, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
+    descripcion = models.CharField(max_length=50, db_collation='Modern_Spanish_CI_AS', blank=True, null=True)
     tamano = models.IntegerField(blank=True, null=True)
-    color = models.CharField(max_length=30, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
+    color = models.CharField(max_length=30, db_collation='Modern_Spanish_CI_AS', blank=True, null=True)
     valor = models.IntegerField(blank=True, null=True)
     idunidadmedida = models.ForeignKey('Unidadmedida', models.DO_NOTHING, db_column='idUnidadMedida', blank=True, null=True)  # Field name made lowercase.
 
@@ -35,14 +35,14 @@ class Artefactos(models.Model):
 
 class Boleta(models.Model):
     idboleta = models.AutoField(db_column='idBoleta', primary_key=True)  # Field name made lowercase.
-    mediodepago = models.CharField(db_column='medioDePago', max_length=15, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)  # Field name made lowercase.
+    mediodepago = models.CharField(db_column='medioDePago', max_length=15, db_collation='Modern_Spanish_CI_AS', blank=True, null=True)  # Field name made lowercase.
     fecha = models.DateTimeField(blank=True, null=True)
-    banco = models.CharField(max_length=50, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
-    comprobante = models.CharField(max_length=30, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
+    banco = models.CharField(max_length=50, db_collation='Modern_Spanish_CI_AS', blank=True, null=True)
+    comprobante = models.CharField(max_length=30, db_collation='Modern_Spanish_CI_AS', blank=True, null=True)
     monto = models.IntegerField(blank=True, null=True)
     efectivo = models.IntegerField(blank=True, null=True)
     vuelto = models.IntegerField(blank=True, null=True)
-    descripcion = models.CharField(max_length=200, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
+    descripcion = models.CharField(max_length=200, db_collation='Modern_Spanish_CI_AS', blank=True, null=True)
     idreserva = models.ForeignKey('Reservas', models.DO_NOTHING, db_column='idReserva', blank=True, null=True)  # Field name made lowercase.
     iddetalleservicio = models.ForeignKey('Detalleservicio', models.DO_NOTHING, db_column='idDetalleServicio', blank=True, null=True)  # Field name made lowercase.
 
@@ -53,7 +53,7 @@ class Boleta(models.Model):
 
 class Comuna(models.Model):
     idcomuna = models.AutoField(db_column='idComuna', primary_key=True)  # Field name made lowercase.
-    comuna = models.CharField(unique=True, max_length=50, db_collation='SQL_Latin1_General_CP1_CI_AS')
+    comuna = models.CharField(unique=True, max_length=50, db_collation='Modern_Spanish_CI_AS')
     idregion = models.ForeignKey('Region', models.DO_NOTHING, db_column='idRegion', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
@@ -63,8 +63,8 @@ class Comuna(models.Model):
 
 class Departamentos(models.Model):
     iddepartamento = models.AutoField(db_column='idDepartamento', primary_key=True)  # Field name made lowercase.
-    descripcion = models.CharField(max_length=100, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
-    direccion = models.CharField(max_length=100, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
+    descripcion = models.CharField(max_length=100, db_collation='Modern_Spanish_CI_AS', blank=True, null=True)
+    direccion = models.CharField(max_length=100, db_collation='Modern_Spanish_CI_AS', blank=True, null=True)
     canthabitaciones = models.IntegerField(db_column='cantHabitaciones', blank=True, null=True)  # Field name made lowercase.
     cantbanos = models.IntegerField(db_column='cantBanos', blank=True, null=True)  # Field name made lowercase.
     precionoche = models.IntegerField(db_column='precioNoche', blank=True, null=True)  # Field name made lowercase.
@@ -80,10 +80,10 @@ class Departamentos(models.Model):
 
 class Detalleinconveniente(models.Model):
     iddetalleinconveniente = models.AutoField(db_column='idDetalleInconveniente', primary_key=True)  # Field name made lowercase.
-    detalle = models.CharField(max_length=200, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
-    mediodepago = models.CharField(db_column='medioDePago', max_length=15, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)  # Field name made lowercase.
-    banco = models.CharField(max_length=50, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
-    comprobante = models.CharField(max_length=30, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
+    detalle = models.CharField(max_length=200, db_collation='Modern_Spanish_CI_AS', blank=True, null=True)
+    mediodepago = models.CharField(db_column='medioDePago', max_length=15, db_collation='Modern_Spanish_CI_AS', blank=True, null=True)  # Field name made lowercase.
+    banco = models.CharField(max_length=50, db_collation='Modern_Spanish_CI_AS', blank=True, null=True)
+    comprobante = models.CharField(max_length=30, db_collation='Modern_Spanish_CI_AS', blank=True, null=True)
     monto = models.IntegerField(blank=True, null=True)
     efectivo = models.IntegerField(blank=True, null=True)
     vuelto = models.IntegerField(blank=True, null=True)
@@ -108,7 +108,7 @@ class Detalleservicio(models.Model):
 
 class Estadodepto(models.Model):
     idestadodepto = models.AutoField(db_column='idEstadoDepto', primary_key=True)  # Field name made lowercase.
-    estadodepto = models.CharField(db_column='estadoDepto', max_length=50, db_collation='SQL_Latin1_General_CP1_CI_AS')  # Field name made lowercase.
+    estadodepto = models.CharField(db_column='estadoDepto', max_length=50, db_collation='Modern_Spanish_CI_AS')  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -117,7 +117,7 @@ class Estadodepto(models.Model):
 
 class Galeria(models.Model):
     idgaleria = models.AutoField(db_column='idGaleria', primary_key=True)  # Field name made lowercase.
-    descripcionimagen = models.CharField(db_column='descripcionImagen', max_length=100, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)  # Field name made lowercase.
+    descripcionimagen = models.CharField(db_column='descripcionImagen', max_length=100, db_collation='Modern_Spanish_CI_AS', blank=True, null=True)  # Field name made lowercase.
     imagen = models.BinaryField(blank=True, null=True)
     iddepartamento = models.ForeignKey(Departamentos, models.DO_NOTHING, db_column='idDepartamento', blank=True, null=True)  # Field name made lowercase.
 
@@ -128,7 +128,7 @@ class Galeria(models.Model):
 
 class Gastos(models.Model):
     idgastos = models.AutoField(db_column='idGastos', primary_key=True)  # Field name made lowercase.
-    descripcion = models.CharField(max_length=15, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
+    descripcion = models.CharField(max_length=15, db_collation='Modern_Spanish_CI_AS', blank=True, null=True)
     monto = models.IntegerField(blank=True, null=True)
     fechagastos = models.DateField(db_column='fechaGastos', blank=True, null=True)  # Field name made lowercase.
     iddepartamento = models.ForeignKey(Departamentos, models.DO_NOTHING, db_column='idDepartamento', blank=True, null=True)  # Field name made lowercase.
@@ -152,7 +152,7 @@ class Inventario(models.Model):
 
 class Region(models.Model):
     idregion = models.AutoField(db_column='idRegion', primary_key=True)  # Field name made lowercase.
-    region = models.CharField(unique=True, max_length=50, db_collation='SQL_Latin1_General_CP1_CI_AS')
+    region = models.CharField(unique=True, max_length=50, db_collation='Modern_Spanish_CI_AS')
 
     class Meta:
         managed = False
@@ -178,16 +178,16 @@ class Reservas(models.Model):
     idreserva = models.AutoField(db_column='idReserva', primary_key=True)  # Field name made lowercase.
     fechadesde = models.DateField(db_column='fechaDesde', blank=True, null=True)  # Field name made lowercase.
     fechahasta = models.DateField(db_column='fechaHasta', blank=True, null=True)  # Field name made lowercase.
-    estadoreserva = models.CharField(db_column='estadoReserva', max_length=12, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)  # Field name made lowercase.
+    estadoreserva = models.CharField(db_column='estadoReserva', max_length=12, db_collation='Modern_Spanish_CI_AS', blank=True, null=True)  # Field name made lowercase.
     abono = models.IntegerField(blank=True, null=True)
     checkin = models.DateTimeField(db_column='checkIn', blank=True, null=True)  # Field name made lowercase.
     chekout = models.DateTimeField(db_column='chekOut', blank=True, null=True)  # Field name made lowercase.
     fechahorareserva = models.DateTimeField(db_column='fechaHoraReserva', blank=True, null=True)  # Field name made lowercase.
     precionochereserva = models.IntegerField(db_column='precioNocheReserva', blank=True, null=True)  # Field name made lowercase.
     saldo = models.IntegerField(blank=True, null=True)
-    preciototalreserva = models.IntegerField(db_column='precioTotalReserva', blank=True, null=True)  # Field name made lowercase.
     iddepartamento = models.ForeignKey(Departamentos, models.DO_NOTHING, db_column='idDepartamento', blank=True, null=True)  # Field name made lowercase.
     idusuario = models.ForeignKey('Usuarios', models.DO_NOTHING, db_column='idUsuario', blank=True, null=True)  # Field name made lowercase.
+    preciototalreserva = models.IntegerField(db_column='precioTotalReserva', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -196,8 +196,8 @@ class Reservas(models.Model):
 
 class Servicios(models.Model):
     idservicio = models.AutoField(db_column='idServicio', primary_key=True)  # Field name made lowercase.
-    descripcion = models.CharField(max_length=100, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
-    disponibilidad = models.CharField(max_length=13, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
+    descripcion = models.CharField(max_length=100, db_collation='Modern_Spanish_CI_AS', blank=True, null=True)
+    disponibilidad = models.CharField(max_length=13, db_collation='Modern_Spanish_CI_AS', blank=True, null=True)
     precio = models.IntegerField(blank=True, null=True)
     idtiposervicio = models.ForeignKey('Tiposervicios', models.DO_NOTHING, db_column='idTipoServicio', blank=True, null=True)  # Field name made lowercase.
 
@@ -208,7 +208,7 @@ class Servicios(models.Model):
 
 class Tipogasto(models.Model):
     idtipogasto = models.AutoField(db_column='idTipoGasto', primary_key=True)  # Field name made lowercase.
-    tipogasto = models.CharField(db_column='tipoGasto', max_length=50, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)  # Field name made lowercase.
+    tipogasto = models.CharField(db_column='tipoGasto', max_length=50, db_collation='Modern_Spanish_CI_AS', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -217,7 +217,7 @@ class Tipogasto(models.Model):
 
 class Tiposervicios(models.Model):
     idtiposervicio = models.AutoField(db_column='idTipoServicio', primary_key=True)  # Field name made lowercase.
-    tiposervicio = models.CharField(db_column='tipoServicio', max_length=100, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)  # Field name made lowercase.
+    tiposervicio = models.CharField(db_column='tipoServicio', max_length=100, db_collation='Modern_Spanish_CI_AS', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -226,7 +226,7 @@ class Tiposervicios(models.Model):
 
 class Tipousuarios(models.Model):
     idtipousuario = models.AutoField(db_column='idTipoUsuario', primary_key=True)  # Field name made lowercase.
-    tipousuario = models.CharField(db_column='tipoUsuario', max_length=50, db_collation='SQL_Latin1_General_CP1_CI_AS')  # Field name made lowercase.
+    tipousuario = models.CharField(db_column='tipoUsuario', max_length=50, db_collation='Modern_Spanish_CI_AS')  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -235,7 +235,7 @@ class Tipousuarios(models.Model):
 
 class Unidadmedida(models.Model):
     idunidadmedida = models.AutoField(db_column='idUnidadMedida', primary_key=True)  # Field name made lowercase.
-    tipounidad = models.CharField(db_column='tipoUnidad', unique=True, max_length=50, db_collation='SQL_Latin1_General_CP1_CI_AS')  # Field name made lowercase.
+    tipounidad = models.CharField(db_column='tipoUnidad', unique=True, max_length=50, db_collation='Modern_Spanish_CI_AS')  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -244,17 +244,17 @@ class Unidadmedida(models.Model):
 
 class Usuarios(models.Model):
     idusuario = models.AutoField(db_column='idUsuario', primary_key=True)  # Field name made lowercase.
-    nombres = models.CharField(max_length=50, db_collation='SQL_Latin1_General_CP1_CI_AS')
-    apellidos = models.CharField(max_length=50, db_collation='SQL_Latin1_General_CP1_CI_AS')
-    usuario = models.CharField(unique=True, max_length=50, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
-    correo = models.CharField(unique=True, max_length=40, db_collation='SQL_Latin1_General_CP1_CI_AS')
-    contrasena = models.CharField(max_length=500, db_collation='SQL_Latin1_General_CP1_CI_AS')
-    identificacion = models.CharField(unique=True, max_length=9, db_collation='SQL_Latin1_General_CP1_CI_AS')
-    celular = models.CharField(unique=True, max_length=50, db_collation='SQL_Latin1_General_CP1_CI_AS')
-    pais = models.CharField(max_length=100, db_collation='SQL_Latin1_General_CP1_CI_AS')
-    codigoverificacion = models.CharField(db_column='codigoVerificacion', max_length=15, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)  # Field name made lowercase.
-    habilitada = models.CharField(max_length=13, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
-    espasaporte = models.CharField(db_column='esPasaporte', max_length=9, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)  # Field name made lowercase.
+    nombres = models.CharField(max_length=50, db_collation='Modern_Spanish_CI_AS')
+    apellidos = models.CharField(max_length=50, db_collation='Modern_Spanish_CI_AS')
+    usuario = models.CharField(unique=True, max_length=50, db_collation='Modern_Spanish_CI_AS', blank=True, null=True)
+    correo = models.CharField(unique=True, max_length=40, db_collation='Modern_Spanish_CI_AS')
+    contrasena = models.CharField(max_length=500, db_collation='Modern_Spanish_CI_AS')
+    identificacion = models.CharField(unique=True, max_length=9, db_collation='Modern_Spanish_CI_AS')
+    celular = models.CharField(unique=True, max_length=50, db_collation='Modern_Spanish_CI_AS')
+    pais = models.CharField(max_length=100, db_collation='Modern_Spanish_CI_AS')
+    codigoverificacion = models.CharField(db_column='codigoVerificacion', max_length=15, db_collation='Modern_Spanish_CI_AS', blank=True, null=True)  # Field name made lowercase.
+    habilitada = models.CharField(max_length=13, db_collation='Modern_Spanish_CI_AS', blank=True, null=True)
+    espasaporte = models.CharField(db_column='esPasaporte', max_length=9, db_collation='Modern_Spanish_CI_AS', blank=True, null=True)  # Field name made lowercase.
     idtipousuario = models.ForeignKey(Tipousuarios, models.DO_NOTHING, db_column='idTipoUsuario', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
@@ -263,7 +263,7 @@ class Usuarios(models.Model):
 
 
 class AuthGroup(models.Model):
-    name = models.CharField(unique=True, max_length=150, db_collation='SQL_Latin1_General_CP1_CI_AS')
+    name = models.CharField(unique=True, max_length=150, db_collation='Modern_Spanish_CI_AS')
 
     class Meta:
         managed = False
@@ -282,9 +282,9 @@ class AuthGroupPermissions(models.Model):
 
 
 class AuthPermission(models.Model):
-    name = models.CharField(max_length=255, db_collation='SQL_Latin1_General_CP1_CI_AS')
+    name = models.CharField(max_length=255, db_collation='Modern_Spanish_CI_AS')
     content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING)
-    codename = models.CharField(max_length=100, db_collation='SQL_Latin1_General_CP1_CI_AS')
+    codename = models.CharField(max_length=100, db_collation='Modern_Spanish_CI_AS')
 
     class Meta:
         managed = False
@@ -293,13 +293,13 @@ class AuthPermission(models.Model):
 
 
 class AuthUser(models.Model):
-    password = models.CharField(max_length=128, db_collation='SQL_Latin1_General_CP1_CI_AS')
+    password = models.CharField(max_length=128, db_collation='Modern_Spanish_CI_AS')
     last_login = models.DateTimeField(blank=True, null=True)
     is_superuser = models.BooleanField()
-    username = models.CharField(unique=True, max_length=150, db_collation='SQL_Latin1_General_CP1_CI_AS')
-    first_name = models.CharField(max_length=150, db_collation='SQL_Latin1_General_CP1_CI_AS')
-    last_name = models.CharField(max_length=150, db_collation='SQL_Latin1_General_CP1_CI_AS')
-    email = models.CharField(max_length=254, db_collation='SQL_Latin1_General_CP1_CI_AS')
+    username = models.CharField(unique=True, max_length=150, db_collation='Modern_Spanish_CI_AS')
+    first_name = models.CharField(max_length=150, db_collation='Modern_Spanish_CI_AS')
+    last_name = models.CharField(max_length=150, db_collation='Modern_Spanish_CI_AS')
+    email = models.CharField(max_length=254, db_collation='Modern_Spanish_CI_AS')
     is_staff = models.BooleanField()
     is_active = models.BooleanField()
     date_joined = models.DateTimeField()
@@ -333,10 +333,10 @@ class AuthUserUserPermissions(models.Model):
 
 class DjangoAdminLog(models.Model):
     action_time = models.DateTimeField()
-    object_id = models.TextField(db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
-    object_repr = models.CharField(max_length=200, db_collation='SQL_Latin1_General_CP1_CI_AS')
+    object_id = models.TextField(db_collation='Modern_Spanish_CI_AS', blank=True, null=True)
+    object_repr = models.CharField(max_length=200, db_collation='Modern_Spanish_CI_AS')
     action_flag = models.SmallIntegerField()
-    change_message = models.TextField(db_collation='SQL_Latin1_General_CP1_CI_AS')
+    change_message = models.TextField(db_collation='Modern_Spanish_CI_AS')
     content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING, blank=True, null=True)
     user = models.ForeignKey(AuthUser, models.DO_NOTHING)
 
@@ -346,8 +346,8 @@ class DjangoAdminLog(models.Model):
 
 
 class DjangoContentType(models.Model):
-    app_label = models.CharField(max_length=100, db_collation='SQL_Latin1_General_CP1_CI_AS')
-    model = models.CharField(max_length=100, db_collation='SQL_Latin1_General_CP1_CI_AS')
+    app_label = models.CharField(max_length=100, db_collation='Modern_Spanish_CI_AS')
+    model = models.CharField(max_length=100, db_collation='Modern_Spanish_CI_AS')
 
     class Meta:
         managed = False
@@ -357,8 +357,8 @@ class DjangoContentType(models.Model):
 
 class DjangoMigrations(models.Model):
     id = models.BigAutoField(primary_key=True)
-    app = models.CharField(max_length=255, db_collation='SQL_Latin1_General_CP1_CI_AS')
-    name = models.CharField(max_length=255, db_collation='SQL_Latin1_General_CP1_CI_AS')
+    app = models.CharField(max_length=255, db_collation='Modern_Spanish_CI_AS')
+    name = models.CharField(max_length=255, db_collation='Modern_Spanish_CI_AS')
     applied = models.DateTimeField()
 
     class Meta:
@@ -367,10 +367,23 @@ class DjangoMigrations(models.Model):
 
 
 class DjangoSession(models.Model):
-    session_key = models.CharField(primary_key=True, max_length=40, db_collation='SQL_Latin1_General_CP1_CI_AS')
-    session_data = models.TextField(db_collation='SQL_Latin1_General_CP1_CI_AS')
+    session_key = models.CharField(primary_key=True, max_length=40, db_collation='Modern_Spanish_CI_AS')
+    session_data = models.TextField(db_collation='Modern_Spanish_CI_AS')
     expire_date = models.DateTimeField()
 
     class Meta:
         managed = False
         db_table = 'django_session'
+
+
+class Sysdiagrams(models.Model):
+    name = models.CharField(max_length=128, db_collation='Modern_Spanish_CI_AS')
+    principal_id = models.IntegerField()
+    diagram_id = models.AutoField(primary_key=True)
+    version = models.IntegerField(blank=True, null=True)
+    definition = models.BinaryField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'sysdiagrams'
+        unique_together = (('principal_id', 'name'),)
