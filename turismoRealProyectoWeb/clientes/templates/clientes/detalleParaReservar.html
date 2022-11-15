@@ -10,8 +10,20 @@
 <link rel="stylesheet" href="{% static 'clientes/css/detalleParaReservar.css' %}"></link>
 <script src="{% static 'clientes/js/detalleParaReservar.js' %}"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 {% endblock %}
 
+{% if messages %}
+    {% for m in messages %}
+        <script>
+            Swal.fire({
+                "title": "Ojo piojo",
+                "text": "{{m}}",
+                "icon": "warning"
+            })
+        </script>
+    {% endfor %}
+{% endif %}
 <section>         
     {% for c in depto %}     
     <h1 class="title">{{c.10}}, {{c.11}}</h1>
@@ -111,10 +123,11 @@
         <input type="submit" value="Consultar" class="btn-reservar">
         {% endif %}
         
+        
 
     </form>
   
-    <h3 id="avisoOcupada">{{ocupada}}</h3>
+    
 
 </section>
 <br>

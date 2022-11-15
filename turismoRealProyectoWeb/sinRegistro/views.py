@@ -28,7 +28,7 @@ def iniciarSesion(request):
             request.session['usuario'] = usuario
             return redirect('home')
         except:
-            data['mensaje'] = 'Algo salió mal'
+            messages.success(request,"No podemos encontrar tu cuenta")
     return render(request, 'registration/login.html',data)
 
 
@@ -54,11 +54,9 @@ def registro(request):
             crearCliente(nombres,apellidos,usuario,correo,contrasena,identificacion,celular,pais,codigoVerificacion,idTipoUsuario,patron,habilitado,esPasaporte)
             success= f"{nombres}, te registraste con exito, verifica el codigo de validacion que se te envió a tu correo"
             enviarEmail(codigoVerificacion,correo)
-            data['mensaje'] = success
+            return redirect('verificacion')
         except:
-            success="No pudimos registrarte, revisa tus datos e intentalo nuevamente"
-            data['mensaje'] = success
-
+            messages.success(request,"No pudimos registrarte, revisa tus datos e intentalo nuevamente")
     return render(request,'registration/registro.html',data)
 
 def verificacion(request):
@@ -66,7 +64,11 @@ def verificacion(request):
     }
     if request.method == 'POST':
         codigoVerificacion = request.POST.get('codigo')
-        verificar(codigoVerificacion)
+        if Usuarios.objects.filter(codigoverificacion=codigoVerificacion):
+            verificar(codigoVerificacion)
+            return redirect('iniciarSesion')
+        else:
+            data['mensaje'] = 'El codigo ingresado es incorrecto'
     return render(request, 'registration/Verificacion.html', data)
 
 def generarCodigoVerificacion():

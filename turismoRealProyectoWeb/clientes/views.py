@@ -57,7 +57,8 @@ def revisarReserva(request,item):
         data ['usuarioActual']= usuarioActual
     if request.method == 'POST':
         cancelarReserva(item)
-        return redirect('perfil')
+        messages.success(request,"La reserva fue cancelada exitosamente")
+
         
         
     return render(request, 'clientes/revisarReserva.html',data)
@@ -73,10 +74,6 @@ def ComoReservar(request):
     
 
 def listarUsuarios(request):
-    usuarios = []
-   # for c in Usuarios.objects.all():
-    #    usuario = {'usuario':c.nombres}
-     #   usuarios.append(usuario)
     data = list(Usuarios.objects.values('usuario','correo','identificacion','celular'))
     return JsonResponse(data, safe = False)
 
@@ -122,7 +119,7 @@ def detalleParaReservar(request,item):
         for c in disponibilidad:
             #si la contiene se notifica
             if c[0] != None:
-                data['ocupada']=f'ya existe una reserva para este departamento entre {c[1]} y {c[2]}, ademas se debe considerar dos dias despues del termino para mantenimiento. por favor, escoge otra fecha'
+                messages.success(request,f'ya existe una reserva para este departamento entre {c[1]} y {c[2]}, ademas se debe considerar dos dias despues del termino para mantenimiento. por favor, escoge otra fecha')
                 break
         else:
             #obtengo una lista de los id's de servicio seleccionados en los input 'checkbox'

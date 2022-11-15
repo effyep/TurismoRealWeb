@@ -4,6 +4,7 @@
     <title>RegistroUsuario</title>
     <link rel="stylesheet" href="{% static 'sinRegistro/css/RegistroUsuario.css' %}">
     
+    
     {% endblock %}
 
     {% block contenido %}
@@ -13,43 +14,43 @@
         <h2 class="form_titulo">Registrate</h2>
         <br>
         <h3 class="subtitulo">Te damos la bienvenida a Turismo Real</h3>
-        <h3 class="mensajeError">{{mensaje}}</h3>
+        <h3 class="mensajeError">{{mensajeError}}</h3>
         
         <div class="contenedor">
             <div class="NombresRegistro">
-                <input type="text" name="nombres" id="nombres" placeholder="Nombres" required >
+                <input type="text" name="nombres" id="nombres" placeholder="Nombres"  >
                 <span ></span>
             </div>
             <div class="ApellidosRegistro">
-                <input type="text" name="apellidos" id="apellidos" placeholder="Apellidos" required >
+                <input type="text" name="apellidos" id="apellidos" placeholder="Apellidos" >
                 <span ></span>
             </div>
             <div class="Usuario">
-                <input type="text" name="usuario" id="usuario" placeholder="Usuario" required >
+                <input type="text" name="usuario" id="usuario" placeholder="Usuario"  >
                 <span ></span>
             </div>
             <div class="EmailRegistro">
-                <input type="email" name="email" id="email" placeholder="Email" required >
+                <input type="email" name="email" id="email" placeholder="Email"  >
                 <span></span>
             </div>
             <div class="Contraseña">
-                <input type="password" name="contraseña" id="contraseña" placeholder="Contraseña" required>
+                <input type="password" name="contraseña" id="contraseña" placeholder="Contraseña" >
                 <span></span>
             </div>
             <div class="RepContraseña">
-                <input type="password" name="repcontraseña" id="repcontraseña" placeholder="Repetir Constraseña" required>
+                <input type="password" name="repcontraseña" id="repcontraseña" placeholder="Repetir Constraseña" >
                 <span></span>
             </div>
             <div class="Identificacion">
-                <input type="text" name="identificacion" id="identificacion" placeholder="RUT o pasaporte" required >
+                <input type="text" name="identificacion" id="identificacion" placeholder="RUT o pasaporte"  >
                 <span></span>
             </div>
             <div class="Celular">
-                <input type="text" name="celular" id="celular" placeholder="Celular" required>
+                <input type="text" name="celular" id="celular" placeholder="Celular" >
                 <span></span>
             </div>
             <div class="Pais">
-                <input type="text" name="pais" id="pais" placeholder="Pais" required>
+                <input type="text" name="pais" id="pais" placeholder="Pais" >
                 <span></span>
             </div>
         </div> 
@@ -59,5 +60,17 @@
     </form>
     
     <script src="{% static 'sinRegistro/js/validacionesRegistro.js' %}"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {% if messages %}
+    {% for m in messages %}
+        <script>
+            Swal.fire({
+                "title": "Ojo piojo",
+                "text": "{{m}}",
+                "icon": "warning"
+            })
+        </script>
+    {% endfor %}
+{% endif %}
     <br>
     {% endblock %}

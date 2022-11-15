@@ -10,10 +10,14 @@
 {% block contenido %}
     <form action="" method="POST" class="form_verificacion">{% csrf_token %}      
             <h3 class="Titulo">Verificación de correo</h3>
+            
             <br/>
             <p class="Parrafo">Se ha enviado un código de verificación a la dirección de correo electronico ingresado, por favor verifique su correo.</p>
+            
             <div class="Codigo"><input type="text" name="codigo" id="codigo" placeholder="Ingrese código" required ></div>
+            <h3>{{mensaje}}</h3>
             <input type="submit" value="Verificar" class="btn-Verificar"> 
     </form>
+    
 
     {% endblock %}

@@ -20,4 +20,16 @@
         {{mensaje}}
         <br>
     </form>
-    {% endblock %}
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {% if messages %}
+        {% for m in messages %}
+            <script>
+                Swal.fire({
+                    "title": "Lo sentimos",
+                    "text": "{{m}}",
+                    "icon": "error"
+                })
+            </script>
+        {% endfor %}
+    {% endif %}
+{% endblock %}
