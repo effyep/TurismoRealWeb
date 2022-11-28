@@ -2,7 +2,10 @@ from django.shortcuts import render,redirect
 from django.db import connection
 from django.http import JsonResponse,HttpResponse
 from django.contrib import messages
-from .models import Usuarios
+from .models import Usuarios, Detalleservicio
+from transbank.webpay.webpay_plus.transaction import *
+from transbank.common.options import *
+
 
 
 # Create your views here.
@@ -49,10 +52,12 @@ def miPerfil(request):
 def revisarReserva(request,item):
     usuarioId= request.session['usuario_id']
     data = {
-        'reserva': RReserva(item,usuarioId)
+        
         }
     if 'usuario_id' in request.session:
-        
+        data['reservas']= RReserva(item)
+        print(data['reservas'])
+        print(request.session['usuario_id'])
         usuarioActual = request.session['usuario']
         data ['usuarioActual']= usuarioActual
     if request.method == 'POST':
@@ -81,10 +86,36 @@ def listarUsuarios(request):
 
 def reservaExitosa(request):
     data = {}
+    bolsa = request.session['bolsa']
     if 'usuario_id' in request.session:
         usuarioActual = request.session['usuario']
         data ['usuarioActual']= usuarioActual
-    return render(request, 'clientes/ReservaExitosa.html')
+    
+        resultado=request.GET.get('token_ws')
+        tx = Transaction(WebpayOptions(IntegrationCommerceCodes.WEBPAY_PLUS, IntegrationApiKeys.WEBPAY, IntegrationType.TEST))
+        resp = tx.commit(resultado)
+        infoPosibleReserva = request.session['infoPosibleReserva']
+        id=infoPosibleReserva['idPosibleReserva']
+        monto =resp['amount']
+        data['respuesta'] = resp
+        status=str(resp['status'])
+
+        if (int(monto) == int(bolsa['precioTotal']) and (status == 'AUTHORIZED')):
+            concretarReservaCompleto(id,monto)
+            del request.session['infoPosibleReserva']
+            del request.session['bolsa']
+            
+        elif (int(monto) == int(bolsa['abono']) and (status == 'AUTHORIZED')):
+            print('es el abono')
+            concretarReservaAbono(id,monto)
+            del request.session['infoPosibleReserva']
+            del request.session['bolsa']
+        else:
+            data['mensaje'] = 'hubo un problema al procesar el pago'
+            
+        
+
+    return render(request, 'clientes/ReservaExitosa.html',data)
 
 
 def detalleParaReservar(request,item):
@@ -93,27 +124,28 @@ def detalleParaReservar(request,item):
         'servicios':datosServicio()
     }
     idUsuario = request.session['usuario_id']
-    print(item)
     
     if 'usuario_id' in request.session:
         usuarioActual = request.session['usuario']
         data ['usuarioActual']= usuarioActual
 
-    
-
     if request.method == 'POST':
         inicio = request.POST.get('inicio')
         fechaSalida  = request.POST.get('fechaSalida')
-        print(inicio)
-        print(fechaSalida)
-        
-        
-        cantHuespedes = request.POST.get('Huespedes')
+        cantHuespedes = request.POST.get('personas')
+        #obtengo una lista de los id's de servicio seleccionados en los input 'checkbox'
+        idServicio= request.POST.getlist('servicio')
+        #aca la cantidad viene con los valores vacios o ceros incluidos, lo que entorpece el calculo con los servicios
+
+        cantidadServicio= request.POST.getlist('cantidad')
+        #aqui guardaremos solo los valores que no sean 0 o vacios entonces se complementa con la lista de id servicios
+        cantidadServicioLimpio=[]
+        for c in cantidadServicio:
+            if c != '0':
+                cantidadServicioLimpio.append(c)
         # trae valores si en algun dia de los seleccionados ya existe una reserva
         disponibilidad =disponibilidadFecha(item,inicio,fechaSalida) 
-        print(disponibilidad)
         #trae todos los datos del depto segun la id (q se le pasa por url)
-        
         datos = datosDepto(item)
         #aca verificamos si disponibilidad contiene algun valor
         for c in disponibilidad:
@@ -122,76 +154,120 @@ def detalleParaReservar(request,item):
                 messages.success(request,f'ya existe una reserva para este departamento entre {c[1]} y {c[2]}, ademas se debe considerar dos dias despues del termino para mantenimiento. por favor, escoge otra fecha')
                 break
         else:
-            #obtengo una lista de los id's de servicio seleccionados en los input 'checkbox'
-            idServicio= request.POST.getlist('servicio')
-
-            print('AAAA',idServicio)
             #aquí comienzo a obtener el valor total de los servicios
             precioTotalServicios =0
+            iterador=0
             #recorro la lista de id's obtenida anteriormente para obtener el valor de cada servicio 
             for c in idServicio:
+                
                 #la funcion consultar servicio se le entrega el id del servicio para obtener todos los datos relacionados a este en una tupla
                 #y se guarda el valor en la variable 'valor'
                 valor = consultarServicio(c)
-                #se actualiza la variable precio sumandole el valor por cada recorrido
-                precioTotalServicios = precioTotalServicios+valor[3]
+                
+                #se actualiza la variable precio sumandole el valor por cada recorrido y se multiplica por la cantidad de servicios
+                precioTotalServicios = precioTotalServicios + (valor[3] * int(cantidadServicioLimpio[iterador]))
+                iterador +=1
             #desde el procedimiento almacenado extraigo la cantidad de dias 
-            
             dias = cantDias(inicio,fechaSalida)
             totalDias= extraerValorTupla(dias,0)
-            print('dias',totalDias)
             precioNoche = extraerValorTupla(datos[0],5)
-            print(precioNoche)
             precioTotalDias= totalDias*precioNoche
-            print('precioTotalDias',precioTotalDias)
             #preio total de la reserva
             precioTotalReserva = precioTotalDias+precioTotalServicios
-            print('precioTotalServ',precioTotalServicios)
             #el valor del abono
             abono = calcularAbono(precioTotalReserva)
             #valores q se muestran en el front
             data['abono']=abono
             data['TotalReserva']=precioTotalReserva
-
-            crearPosibleReserva(inicio,fechaSalida,precioNoche,item,idUsuario,precioTotalReserva)
-            pr=obtenerIDPosibleReserva(idUsuario)
-            pr= extraerValorTupla(pr[0],0)
+            pr = True
             data['IDPR']= pr
-            
+            crearBolsa(request,totalDias,precioTotalDias,inicio,fechaSalida,item,idServicio,cantidadServicioLimpio,precioTotalServicios,precioTotalReserva,abono,cantHuespedes)
+            print(request.session['bolsa'])
 
             
             #diccc = {'idServicios':idServicio, 'idDepto':item,'fechas':[fechaLlegada,fechaSalida],'totalDias':totalDias,'precioTotalDias':precioTotalDias,'precioServicios':precioTotalServicios,'precioReserva':precioTotalReserva,'totalAbono':abono}
     return render(request, 'clientes/detalleParaReservar.html' ,data)
 
-def solicitarReserva(request,item):
-    data = {
-        'datosPosibleReserva': obtenerDatosPosibleReserva(item)
-    }
-    datosPosibleReserva = obtenerDatosPosibleReserva(item)
-    precioTotal = extraerValorTupla(datosPosibleReserva[0],12)
-    precioAbono= calcularAbono(precioTotal)
-    data['abono'] = precioAbono
-    if 'usuario_id' in request.session:
+def solicitarReserva(request):
+    bolsa = request.session['bolsa']
+    data = {}
+    
+    data['servicios'] = []
+
+    #c es el id de los servicios que selecciono el usuario y se encuentran en la bolsa
+    iterador=0
+    for c in bolsa['servicios']:
+            datosServ = consultarServicio(c)
+            cantServ=bolsa['cantidadServiciosLimpio']
+            s ={'idServicio':datosServ[0],'nombre':datosServ[1],'precio':datosServ[3], 'cantidad':cantServ[iterador],'total':int(datosServ[3])*int(cantServ[iterador])}
+            iterador +=1
+            #al diccionario data se le agrega cada lista
+            data['servicios'].append(s)
+
+    
+    if bolsa['precioTotal'] != 0 and 'usuario_id' in request.session:
+        idDepto = bolsa['idDepartamento']
+        depto = datosDepto(idDepto)
+        data['depto'] = depto
+        data['bolsa']= request.session['bolsa']
         usuarioActual = request.session['usuario']
         data ['usuarioActual']= usuarioActual
+    
+    
 
     if request.method == 'POST':
+        try:
+            valor = request.POST.get('valor') 
+            fechaDesde = bolsa['fechaDesde']
+            fechaHasta  = bolsa['fechaHasta']
+            precioNoche = depto[0][5]
+            idDepartamento = bolsa['idDepartamento']
+            idUsuario = request.session['usuario_id']
+            precioTotalReserva = bolsa['precioTotal']
+            
+            #Creamos una posible reserva
+            crearPosibleReserva(fechaDesde,fechaHasta,precioNoche,idDepartamento,idUsuario,precioTotalReserva)
+            #Obtengo el id de la ultima posible reserva que cumpla con el mismo usuario y depto
+            idPosibleReserva = obtenerIdPosibleReserva(idUsuario, idDepto)
+            idposibleReserva = idPosibleReserva[0][0]
+            print(idposibleReserva)
+
+            for c in data['servicios']:
+                precioTotalServicios = bolsa['precioTotalServicios']
+                crearDetalleServicio(c['total'],c['idServicio'],idposibleReserva,c['cantidad'])
+            
+            numero = 0
+            while True: 
+                nombres = request.POST.get(f'huesped{str(numero)}')
+                apellido = request.POST.get(f'apellido{str(numero)}')
+                rut = request.POST.get(f'rut{str(numero)}')
+                if nombres != None:
+                    numero +=1
+                    print(nombres)
+                    print(apellido)
+                    print(rut)
+                    agregarAcompanantes(nombres, apellido,rut,idposibleReserva)
+                else:
+                    break
+            buy_order = "TR-3284932"
+            ## Versión 3.x del SDK
+            tx = Transaction(WebpayOptions(IntegrationCommerceCodes.WEBPAY_PLUS, IntegrationApiKeys.WEBPAY, IntegrationType.TEST))
+            response = tx.create(buy_order, '6jn0gz1jmyfbugwbnwhah8tukauv5a25', valor, 'http://127.0.0.1:8000/ConfirmarReserva')
+            url = response['url']
+            token = response['token']
+            #dejamos en una sesion el valor de id y monto para en la vista de confirmar segun lo recibido se ejecuten los SP concretar y boleta segun los parametros anteriores
+            infoParaConfirmar(request,idposibleReserva,valor)
+            
+            data['url']=url
+            data['token']=token
+            print(data)
+        except:
+            messages.success(request,"Un error ha ocurrido, por favor revisa tus datos e intentalo nuevamente")
+            
         
-        valor = request.POST.get('total')
-        print(valor)
-        if valor == precioTotal:
-            concretarReservaCompleto(item,valor)
-            crearBoletaPagoCompleto('Debito','CHILE','C-'+str(item),valor,item)
-            return redirect('webpay')
-        
-        else:
-            concretarReservaAbono(item,valor)
-            crearBoletaPagoAbono('Debito','CHILE','C-'+str(item),valor,item)
-            return redirect('webpay')
 
 
 
-        #print(valor)
     return render(request, 'clientes/SolicitarReserva.html',data)
 
 def logout(request):
@@ -270,10 +346,10 @@ def mostrarReservas(idUsuario):
     resultados = cursor.fetchall()
     return resultados
 
-def RReserva(idReserva,idUsuario):
+def RReserva(idReserva,):
     cursor = connection.cursor()
-    params=(idReserva, idUsuario)
-    cursor.execute("{CALL dbo.SP_U_RevisarReserva(%s,%s)}", params)
+    params=(idReserva,)
+    cursor.execute("{CALL dbo.SP_U_RevisarReserva(%s)}", params)
     resultados = cursor.fetchall()
     return resultados
 
@@ -284,27 +360,6 @@ def servicioExtrasContratados(idUsuario, idReserva):
     resultados = cursor.fetchall()
     return resultados
     
-
-def crearPosibleReserva(fechaDesde,fechaHasta,precioNocheDepto,idDepto,idUsuario,precioTotalReserva):
-    cursor = connection.cursor()
-    params=(fechaDesde,fechaHasta,precioNocheDepto,idDepto,idUsuario,precioTotalReserva)
-    cursor.execute("{CALL dbo.SP_CrearPosibleReserva(%s,%s,%s,%s,%s,%s)}",params)
-
-def obtenerIDPosibleReserva(idUsuario):
-
-    cursor = connection.cursor()
-    params=(idUsuario,)
-    cursor.execute("{CALL dbo.SP_ObtenerIDPosibleReserva(%s)}",params)
-    resultado = cursor.fetchall()
-    return resultado
-
-def obtenerDatosPosibleReserva(idPosibleReserva):
-    cursor = connection.cursor()
-    params = (idPosibleReserva,)
-    cursor.execute("{CALL dbo.SP_ObtenerDatosPosibleReserva(%s)}",params)
-    resultados = cursor.fetchall()
-    return resultados
-
 def concretarReservaCompleto(idPosibleReserva, monto):
     cursor = connection.cursor()
     params=(idPosibleReserva,monto)
@@ -331,3 +386,44 @@ def cancelarReserva(idReserva):
     cursor=connection.cursor()
     params=(idReserva,)
     cursor.execute("{CALL dbo.SP_CancelarReserva(%s)}",params)
+
+def crearBolsa(request,dias,precioTotalDias,fechaDesde, fechaHasta,idDepartamento,servicios,cantidadServiciosLimpio,precioTotalServicios,precioTotal,abono,acompañantes):
+    consultarBolsa = request.session.get('bolsa')
+    if consultarBolsa == None:
+        request.session['bolsa']={'fechaDesde':fechaDesde,'dias':dias,'precioTotalDias':precioTotalDias,'fechaHasta':fechaHasta,'idDepartamento':idDepartamento,'servicios':servicios,'cantidadServiciosLimpio':cantidadServiciosLimpio,'precioTotalServicios':precioTotalServicios, 'precioTotal':precioTotal,'abono':abono,'acompañante':acompañantes}
+    else:
+        del request.session['bolsa']
+        crearBolsa(request,dias,precioTotalDias,fechaDesde, fechaHasta,idDepartamento,servicios,cantidadServiciosLimpio,precioTotalServicios,precioTotal,abono,acompañantes)
+    
+
+def infoParaConfirmar(request,idPosibleReserva,monto):
+    ConsultarinfoPosibleReserva = request.session.get('infoPosibleReserva')
+    if ConsultarinfoPosibleReserva == None:
+        request.session['infoPosibleReserva']={'idPosibleReserva':idPosibleReserva,'monto':monto}
+    else:
+        del request.session['infoPosibleReserva']
+        infoParaConfirmar(request,idPosibleReserva,monto)
+
+
+def crearPosibleReserva(fechaDesde, fechaHasta, precioNoche, idDepartamento,idUsuario, precioTotalReserva):
+    cursor = connection.cursor()
+    params = (fechaDesde, fechaHasta, precioNoche, idDepartamento,idUsuario, precioTotalReserva)
+    cursor.execute("{CALL dbo.SP_CrearPosibleReserva(%s,%s,%s,%s,%s,%s)}",params)
+
+def agregarAcompanantes(nombreAcompanante,apellidoAcompanante,identificacion,idReserva):
+    cursor = connection.cursor()
+    params = (nombreAcompanante,apellidoAcompanante,identificacion,idReserva)
+    cursor.execute("{CALL dbo.SP_IngresarAcompanantes(%s,%s,%s,%s)}",params)
+
+def crearDetalleServicio(total,idServicio,idReserva,cantidad):
+    cursor = connection.cursor()
+    params = (total,idServicio,idReserva,cantidad)
+    cursor.execute("{CALL dbo.SP_CrearDetalleServicio(%s,%s,%s,%s)}",params)
+
+def obtenerIdPosibleReserva(idUsuario, idDepto):
+    cursor = connection.cursor()
+    params=(idUsuario,idDepto)
+    cursor.execute("{CALL dbo.SP_ObtenerIdPosibleReserva(%s,%s)}",params)
+    resultado = cursor.fetchall()
+    return resultado
+
