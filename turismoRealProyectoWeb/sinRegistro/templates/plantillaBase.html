@@ -28,6 +28,11 @@
                 <li><a href="Registrarse">Registrate</a></li>
                 <li><a href="IniciarSesion">Iniciar Sesion</a></li>
                 {% endif %}
+                
+                {% if 'bolsa' in request.session %}
+                
+                <a href="{% url 'confirmarReserva' %}"><img src={% static "sinRegistro/images\bolsas-de-compra.png" %} alt="No se encuentra disponible" class="bolsa-img-nav" /></a>
+                {% endif %}
 
             </ul>
         </nav>

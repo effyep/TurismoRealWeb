@@ -28,13 +28,6 @@ def home(request):
         print(resultados)
     return render(request, 'clientes/Principal.html', data)
 
-def webpay(request):
-    data = {}
-    if 'usuario_id' in request.session:
-        usuarioActual = request.session['usuario']
-        data ['usuarioActual']= usuarioActual
-        idUsuarioActual = request.session['usuario_id']
-    return render(request,'clientes/webpay.html')
 
 def miPerfil(request):
     data ={

@@ -6,37 +6,91 @@
     {% endblock %}
 
     {% block contenido %}
-    {% for c in datosPosibleReserva %}
-    <form method="POST">
-        {% csrf_token %}
-        <div>
-            <h1 class="titulo">SOLICITAR RESERVA</h1>
-            <div class="viaje_fecha">
+    {% if bolsa %}
+    <div>                   
+        <h1 class="titulo">SOLICITAR RESERVA</h1>
+        <div class="viaje_fecha">
             <h2>Tu viaje</h2>
             <h3>Fechas</h3>
-            <p>{{c.1}} - {{c.2}}</p>
+            <p>{{bolsa.fechaDesde}} - {{bolsa.fechaHasta}}</p>
             <h3>Huéspedes</h3>
-            <p>1 Huésped</p>
-            </div>
+            <p id="huespedes">{{bolsa.acompañante}}</p>
+        </div>
+
+        <div>
+            <h1 class="metodo">Elige como quieres pagar</h1>
+        </div>
+
+        
+
+        {% for c in depto %}
+        <form {% if url %} action={{url}} {% endif %} class="form-descripcion" method="POST">
+            {% csrf_token %}
             
-            <div>
-                <h1 class="metodo">Elige como quieres pagar</h1>
+            <input type="hidden" name="token_ws" {% if token %} value="{{token}}" {% endif %} />
+            <img class="form-img" src="{% static 'clientes/images/resultado.jpg'%}" alt="No se encuentra disponible">
+            <h1 class="title1">{{c.10}}, {{c.11}}</h1>
+            <div class="form-info">
+                <h3 class="title2">Información del precio</h3>
+                <p class="cantidadX">${{c.5}} x {{bolsa.dias}} noches</p>
+                <p class="monto">${{bolsa.precioTotalDias}}</p>
+
+                {% if bolsa.servicios %}
+                <h3 class="title2">Servicios extras contratados</h3>
+                {% endif %}
+                {% for c in servicios %}
+                <p class="subtitle">{{c.nombre}} x {{c.cantidad}} personas</p>
+                <p class="monto">${{c.total}}</p>
+                {% endfor %}
             </div>
+
+            <div class="agregarHuespedes" id ="agregarHuespedes">
+                <h1 class="registroHuespedes">Registro de Huespedes</h1>
+            </div>
+
+            <div>
+                <h2 class="total-confirmar">TOTAL</h2>
+                <p class="monto">${{bolsa.precioTotal}}</p>
+            </div>
+
             <div class="form_pago" >
                 <div>
                     <h2 class="pago1">Pago único</h2>
-                    <input name="total" type="radio" value="{{c.10}}">${{c.12}}  CLP
-                    <p>Paga el total ahora y listo.</p>
+                    <div class="radio">
+                        <input type="radio" name="valor" value="{{bolsa.precioTotal}}">${{bolsa.precioTotal}} CLP
+                    </div>
+                    <p class="descripcion">Paga el total ahora y listo.</p>
+                </div>
+                <div>
                     <h2 class="pago2">Paga una parte ahora y otra más adelante</h2>
-                    <input name='total'type="radio" value="{{abono}}">${{abono}} CLP>
-                    <p>Paga ${{abono}} ahora y el resto (${{c.12}}) se te cobrará automaticamente a la misma forma de pago
-                        el 5 de abril de 2023. Sin tarifas adicionales.
+                    <div class="radio">
+                        <input type="radio" name="valor" value="{{bolsa.abono}}">${{bolsa.abono}}
+                    </div>
+                    <p class="descripcion">Paga ${{bolsa.precioTotal}} ahora y el resto (${{bolsa.abono}}) se te cobrará automaticamente a la misma forma de pago. Sin tarifas adicionales.
                     </p>
                     <p class="link"><a href="">Más información</a></p>
-                    <input type="submit" value="Pagar">
                 </div>
+                
             </div>
-        </div>
-    </form>
+            
+            <input type="submit" value="Ir a pagar" class="btn-pagar">
+        </form>
+        {% endfor %}
+    </div>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {% endif %}
+    {% if messages %}
+    {% for m in messages %}
+        <script>
+            Swal.fire({
+                "title": "Advertencia",
+                "text": "{{m}}",
+                "icon": "warning"
+            })
+        </script>
     {% endfor %}
+    {% endif %}
+    <script src="{% static 'clientes/js/solicitarReserva.js' %}"></script>
     {% endblock %}
+    
+    

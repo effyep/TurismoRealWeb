@@ -7,14 +7,24 @@
 
     {% block contenido %}
     <div>
+        {% if respuesta.status == 'AUTHORIZED'  %}
         <h1 class="titulo">RESERVA EXITOSA</h1>
         <img class="check" src={% static "clientes/images/check.png" %}>
-        <h2>¡Felicitaciones tu pago fue aprobado!</h2>
-        <p>Detalle del pago:</p>
-        <p>$487.900 Debito RedCompra (WebPay) terminada en 8429</p>
-        <p>Reserva departamento #02 Viña del Mar, Valparaíso</p>
-        <p>Transacción realizada el 22/08/2022</p>
-        <p>Descarga comprobante aquí.</p>
+        <div class ="det-info">
+            
+            
+            
+            <h2>¡Felicitaciones tu pago fue aprobado!</h2>
+            <p>Detalle del pago:</p>
+            <p>${{respuesta.amount}} (WebPay) terminada en {{respuesta.card_detail.card_number}}</p>
+            <p>Reserva departamento #02 Viña del Mar, Valparaíso</p>
+            <p>Transacción realizada el {{respuesta.transaction_date}}</p>
+            <p>Descarga comprobante aquí.</p>
+        {% endif %}
+
+        {{mensaje}}
+            
+        </div>
         <div class="reset"></div>
     </div>
     {% endblock %}

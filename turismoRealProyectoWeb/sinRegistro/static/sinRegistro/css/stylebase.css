@@ -9,6 +9,13 @@
     margin-top: 15px;
 }
 
+.bolsa-img-nav{
+    height: 5vh;
+    margin-top: 15px;
+    margin-bottom: -5px;
+    align-content: center;
+}
+
 nav {
     display: flex;
     justify-content: space-around;

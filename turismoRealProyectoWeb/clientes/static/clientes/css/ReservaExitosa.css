@@ -54,12 +54,16 @@ p{
     font-size: large;   
 }
 .check{
-    float: initial;
-    margin-right:auto;
+    margin-left: 492px;
     width: 150px;
     padding: 150px 400px;
-    margin-bottom: -90px;
-    margin-top: -120px;
+    margin-bottom: -81px;
+    margin-top: -123px;
+}
+
+.det-info{
+    
+    align-content: center;
 }
 
 div.reset {

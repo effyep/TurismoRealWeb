@@ -1,0 +1,237 @@
+
+CREATE PROCEDURE SP_VERIFICAR_CODIGO
+	@codigo VARCHAR(50)
+AS
+BEGIN
+	UPDATE Usuarios SET habilitada = 'Habilitado'
+	WHERE codigoVerificacion = @codigo
+END
+
+--------------------------------------------------
+
+CREATE PROCEDURE SP_UC_CREAR
+	@nombres varchar(50),
+	@apellidos varchar(50),
+	@usuario varchar(50),
+	@correo varchar(40),
+	@contrasena varchar(500),
+	@identificacion varchar(9),
+	@celular varchar(50),
+	@pais varchar(100),
+	@codigoVerificacion varchar(15),
+	@idTipoUsuario int,
+	@patron varchar(50),
+	@habilitada varchar(50),
+	@esPasaporte bit
+AS
+BEGIN
+	INSERT INTO Usuarios values(@nombres,
+	@apellidos ,
+	@usuario ,
+	@correo,
+	(ENCRYPTBYPASSPHRASE(@patron, @contrasena)),
+	@identificacion ,
+	@celular ,
+	@pais,
+	@codigoVerificacion ,
+	@habilitada,
+	@esPasaporte,
+	@idTipoUsuario);
+END;
+
+-------------------------------------------------------------
+CREATE PROCEDURE SP_C_EncontrarDepto
+@personas INT,
+@region  INT
+AS
+BEGIN
+SELECT D.idDepartamento, D.descripcion, D.direccion,
+	D.cantHabitaciones, D.cantBanos,PrecioNoche, 
+	D.idComuna, D.idEstadoDepto ,C.idRegion,C.comuna, R.region
+from Departamentos D
+full outer join Galeria G on G.idDepartamento = D.idDepartamento
+full outer join EstadoDepto E on D.idEstadoDepto = E.idEstadoDepto
+full outer join Comuna C on D.idComuna = C.idComuna
+full outer join Region R on C.idRegion = R.idRegion
+WHERE cantHabitaciones = @personas AND C.idRegion = @region
+END;
+---------------------------------------------------------------
+CREATE PROCEDURE SP_RE_CargarRegion
+AS
+BEGIN
+SELECT Distinct R.region, R.idRegion 
+FROM Region R
+join comuna C on C.idRegion = R.idRegion
+join departamentos D on D.idComuna = D.idComuna
+where C.idComuna = D.idComuna 
+END;
+----------------------------------------------------------------
+CREATE PROCEDURE SP_DATOSDEPTO
+@id INT
+AS
+BEGIN
+SELECT idDepartamento, D.descripcion, D.direccion,
+	D.cantHabitaciones, D.cantBanos,D.PrecioNoche, 
+	D.idComuna, D.idEstadoDepto ,C.idRegion, E.estadoDepto,C.comuna, R.region
+FROM Departamentos D
+inner join EstadoDepto E on D.idEstadoDepto = E.idEstadoDepto
+inner join Comuna C on D.idComuna = C.idComuna
+inner join Region R on C.idRegion = R.idRegion
+WHERE D.idDepartamento = @id
+END;
+----------------------------------------------------------------------------------
+CREATE PROCEDURE SP_MostrarServicios
+AS
+BEGIN
+SELECT idServicio, descripcion, disponibilidad, precio
+FROM servicios
+END;
+----------------------------------------------------------------------------------
+CREATE PROCEDURE SP_C_DisponibilidadFecha
+@IdDepto INT,
+@FechaDesde VARCHAR(50),
+@FechaHasta VARCHAR(50)
+AS
+BEGIN
+SELECT R.idDepartamento, R.fechaDesde, R.fechaHasta,R.abono
+FROM Reservas R
+join Departamentos D on D.idDepartamento = R.idDepartamento 
+WHERE (@FechaDesde  BETWEEN R.fechaDesde and dateadd(DAY,2,R.fechaHasta) AND r.abono IS not NULL AND  R.estadoReserva = 'Reservado' AND D.idDepartamento = @IdDepto) OR (@FechaHasta BETWEEN R.fechaDesde and dateadd(DAY,2,R.fechaHasta) AND r.abono IS not NULL AND  R.estadoReserva = 'Reservado' AND D.idDepartamento = @IdDepto)  
+END;
+---------------------------------------------------------------------------------------
+ALTER PROCEDURE SP_R_CANTDIAS
+@FechaInicio varchar(50),
+@FechaTermino varchar(50)
+AS
+BEGIN
+SELECT DATEDIFF(DAY,@FechaInicio,@FechaTermino) AS DIAS
+END;
+-----------------------------------------------------------------------------------------
+CREATE PROCEDURE SP_ConsultarServicio
+@id INT
+AS
+BEGIN
+SELECT * FROM servicios 
+WHERE idServicio=@id
+END;
+--------------------------------------------------------------------------------------------------
+CREATE PROCEDURE SP_U_Reservas
+@id INT
+AS
+BEGIN
+SELECT R.idReserva, R.fechaDesde, R.fechaHasta, R.abono, R.precioNocheReserva, R.idDepartamento, D.cantBanos, D.cantHabitaciones, D.descripcion, C.comuna, N.region, R.idUsuario,R.estadoReserva
+FROM Reservas R 
+JOIN Departamentos D on  R.idDepartamento = D.idDepartamento
+JOIN Comuna C on C.idComuna = D.idComuna
+JOIN Region N on N.idRegion = C.idRegion
+JOIN Usuarios U on R.idUsuario = U.idUsuario
+WHERE R.idUsuario = @id and R.estadoReserva != 'Pendiente'
+END;
+-------------------------------------------------------------------------------------------------------------
+CREATE PROCEDURE SP_U_RevisarReserva
+@idReserva INT
+AS
+BEGIN
+SELECT  R.idReserva, R.fechaDesde, R.fechaHasta, R.abono, R.precioNocheReserva, R.idDepartamento, D.cantBanos, D.cantHabitaciones, D.descripcion, C.comuna, N.region, R.idUsuario, R.precioTotalReserva, B.fecha,B.monto, R.estadoReserva
+FROM Reservas R 
+JOIN Boleta B on B.idReserva = R.idReserva
+JOIN Usuarios U on R.idUsuario = U.idUsuario
+JOIN Departamentos D on  R.idDepartamento = D.idDepartamento
+JOIN Comuna C on C.idComuna = D.idComuna
+JOIN Region N on N.idRegion = C.idRegion
+WHERE R.idReserva= @idReserva 
+ORDER BY  B.monto  ASC
+END;
+------------------------------------------------------------------------------------------------------------------------------------
+CREATE PROCEDURE SP_ConcretarReservaCompleto
+@id INT,
+@valor INT
+AS
+BEGIN
+UPDATE Reservas
+SET estadoReserva = 'Reservado', abono= @valor,fechaHoraReserva = GETDATE(),saldo=0
+WHERE idReserva = @id;
+END;
+-----------------------------------------------------------------------------------------------------------------------
+CREATE PROCEDURE SP_ConcretarReservaAbono
+@id INT,
+@valor INT
+AS
+BEGIN
+UPDATE Reservas
+SET estadoReserva = 'Reservado', abono= @valor,fechaHoraReserva = GETDATE(),saldo=(precioTotalReserva-@valor)
+WHERE idReserva = @id;
+END;
+------------------------------------------------------------------------------------------------------------------------
+CREATE PROCEDURE SP_CrearBoletaCompleto
+@medioPago VARCHAR(20),
+@banco VARCHAR(20),
+@comprobante VARCHAR(30),
+@monto INT,
+@idReserva INT
+AS
+BEGIN
+INSERT INTO Boleta VALUES(@medioPago,GETDATE(),@banco,@comprobante,@monto,0,0,'Pago reserva completa',@idReserva,NULL);
+END;
+------------------------------------------------------------------------------------------------------------------------
+CREATE PROCEDURE SP_CrearBoletaAbono
+@medioPago VARCHAR(20),
+@banco VARCHAR(20),
+@comprobante VARCHAR(30),
+@monto INT,
+@idReserva INT
+AS
+BEGIN
+INSERT INTO Boleta VALUES(@medioPago,GETDATE(),@banco,@comprobante,@monto,0,0,'Abono',@idReserva,NULL);
+END;
+--------------------------------------------------------------------------------------------------------------------------------
+CREATE PROCEDURE SP_CancelarReserva
+@idReserva INT
+AS
+BEGIN
+UPDATE Reservas
+SET estadoReserva='Cancelado'
+WHERE idReserva = @idReserva
+END;
+-------------------------------------------------------------------------------------------------------------------------------------------
+CREATE PROCEDURE SP_CrearPosibleReserva
+@fechaDesde DATE,
+@fechaHasta DATE,
+@precioNoche INT,
+@idDepartamento INT,
+@idUsuario INT,
+@precioTotalReserva INT
+AS
+BEGIN
+INSERT INTO Reservas VALUES (@fechaDesde,@fechaHasta,'Pendiente',NULL,NULL,NULL,NULL,@precioNoche,NULL,@idDepartamento,@idUsuario,@precioTotalReserva)
+END;
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE PROCEDURE SP_IngresarAcompanantes
+@nombres VARCHAR(20),
+@apellidos VARCHAR(20),
+@identificación VARCHAR(20),
+@idReserva INT
+AS
+BEGIN
+	INSERT INTO Acompanantes VALUES(@nombres,@apellidos,@identificación,@idReserva);
+END;
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE PROCEDURE SP_CrearDetalleServicio
+@TotalDetalleServicio INT,
+@idServicio INT,
+@idReserva INT,
+@cantidad INT
+AS
+BEGIN
+	INSERT INTO DetalleServicio VALUES(SYSDATETIME(),@TotalDetalleServicio,@idServicio,@idReserva,@cantidad);
+END;
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE PROCEDURE SP_ObtenerIDPosibleReserva
+@idUsuario INT,
+@idDepto INT
+AS
+BEGIN
+SELECT idReserva 
+FROM Reservas
+WHERE abono IS NULL  AND idUsuario = @idUsuario AND idReserva = (SELECT IDENT_CURRENT('Reservas')) and idDepartamento = @idDepto
+END;

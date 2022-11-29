@@ -8,7 +8,7 @@
 {% block head %}
 
 <link rel="stylesheet" href="{% static 'clientes/css/detalleParaReservar.css' %}"></link>
-<script src="{% static 'clientes/js/detalleParaReservar.js' %}"></script>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 {% endblock %}
@@ -86,21 +86,23 @@
 
         <div >
             Llegada
-            <input  type="date" min="2022-10-19" max="0000-00-00" name="inicio" id="inicio">
+            <input  type="date" min="2022-10-19" max="0000-00-00" name="inicio" id="inicio" required>
+            <span></span>
         </div>
 
         <div class="salida">
             Salida
-            <input  type="date" min="2022-10-19" max="0000-00-00" name="fechaSalida" id="fechaSalida">
+            <input  type="date" min="2022-10-19" max="0000-00-00" name="fechaSalida" id="fechaSalida" required>
+            <span></span>
         </div>
         <h2 id="total"></h2>
         <div class="select">
-            <select name="personas" id="Huespedes">
+            <select name="personas" id="Huespedes" >
                 <option selected disabled>Huéspedes</option>
-                <option value="cant 1">1</option>
-                <option value="cant 2">2</option>
-                <option value="cant 3">3</option>
-                <option value="cant 4">4</option>
+                <option value="1" >1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>required
             </select>
             
         </div>
@@ -108,7 +110,20 @@
         <h3 class="servicios">Servicios Extras</h3>
         <h5>(opcional)</h5>
         {% for c in servicios %}
-        <div class="service">{{c.1}}<input type="checkbox" value="{{c.0}}" id="servicio", name="servicio"></div>
+        <div class="service">
+            <p class="service">{{c.1}}</p>
+            <div class="divPadre">
+                <input type="number" class="cantidad"  name ="cantidad"  value ="0" min="0" max= "20">
+
+                <input type="checkbox" class="checkbox" hidden="true"  value="{{c.0}}" id="servicio" name="servicio">
+
+            </div>
+            
+        
+        
+        
+        
+        </div>
         
         {% endfor %}
         
@@ -118,9 +133,10 @@
     
         
         {% if IDPR %}
-        <button class="btn-reservar"><a  href="{% url 'confirmarReserva' IDPR %}" class="acolor" >Reservar</a></button>
-        {% else %}
         <input type="submit" value="Consultar" class="btn-reservar">
+        <button class="btn-reservar"><a  href="{% url 'confirmarReserva' %}" class="acolor" >Ir a la bolsa</a></button>
+        {% else %}
+        <input type="submit" value="Consultar disponibilidad" class="btn-reservar">
         {% endif %}
         
         
@@ -140,5 +156,5 @@
 <br>
 <br>
 
-
+<script src="{% static 'clientes/js/detalleParaReservar.js' %}"></script>
 {% endblock %}
