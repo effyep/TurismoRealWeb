@@ -1,3 +1,4 @@
+import random
 from django.shortcuts import render,redirect
 from django.db import connection
 from django.http import JsonResponse,HttpResponse
@@ -8,6 +9,7 @@ from transbank.common.options import *
 from django.template.loader import get_template
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
+import datetime
 
 def enviarmailBoleta(correo,amount,depto,fechaT,tipoTarjeta,fechaD,fechaH,nombreDepto,direccionDepto,comunaDepto,regionDepto,digitos):
     contexto={'correo':correo,
@@ -57,9 +59,9 @@ def home(request):
 
 def miPerfil(request):
     data ={
-        
+
     }
-    usuarioActual = request.session.get("bolsa")
+    usuarioActual = request.session.get("usuario_id")
     if usuarioActual is None:
         return redirect('home')
     if 'usuario_id' in request.session:
@@ -77,7 +79,7 @@ def miPerfil(request):
     return render(request, 'clientes/Perfil.html',data)
 
 def revisarReserva(request,item):
-    usuarioActual = request.session.get("bolsa")
+    usuarioActual = request.session.get("usuario_id")
     if usuarioActual is None:
         return redirect('home')
     usuarioId= request.session['usuario_id']
@@ -118,8 +120,10 @@ def reservaExitosa(request):
     ##Esta variable es entregada por transbank en caso de haber un problema con el pago
     tbk=request.GET.get('TBK_ORDEN_COMPRA')
     #si hay un problema o en la sesion no existe una bolsa entonces redireccione a la vista anterior
-    if tbk is None:
+    if tbk is True:
         return redirect('confirmarReserva')
+    
+    bolsa = request.session['bolsa']
     if bolsa is None:
         return redirect('home')
 
@@ -201,7 +205,8 @@ def detalleParaReservar(request,item):
     data ={
         'depto': datosDepto(item),
         'servicios':datosServicio(),
-        'imagenes':traerImagenes(item)
+        'imagenes':traerImagenes(item),
+        'fechahoy': datetime.date.today()
     }
     print(data['depto'])
     idUsuario = request.session['usuario_id']
@@ -331,7 +336,9 @@ def solicitarReserva(request):
                     agregarAcompanantes(nombres, apellido,rut,idposibleReserva)
                 else:
                     break
-            buy_order = "TR-3284932"
+
+            ##Aca deberiamos crear un numero aleatorio para la orden 
+            buy_order = generarNumeroDeOrder()
             ## Versión 3.x del SDK
             tx = Transaction(WebpayOptions(IntegrationCommerceCodes.WEBPAY_PLUS, IntegrationApiKeys.WEBPAY, IntegrationType.TEST))
             response = tx.create(buy_order, '6jn0gz1jmyfbugwbnwhah8tukauv5a25', valor, 'http://127.0.0.1:8000/ReservaExitosa')
@@ -512,4 +519,12 @@ def traerImagenes(idDepto):
     resultados= cursor.fetchall()
     return resultados
 
+def generarNumeroDeOrder():
+    conjunto = ['OR-DZ65','OR-CF32','OR-ET79','OR-TK94','OR-WM10']
+    lista=['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
+    numero   = str(random.randrange(100,900))
+    letra = random.choice(lista)
+    etiqueta = random.choice(conjunto)
+    codigo   = etiqueta+numero+letra
+    return codigo
 

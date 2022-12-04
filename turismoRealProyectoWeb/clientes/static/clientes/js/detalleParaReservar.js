@@ -35,6 +35,7 @@ function compararFechas(fechaInicio, fechaSalida){
     if (fechaInicio > fechaSalida){
         return 1;
     }
+   
     else
         return 0
     }
@@ -52,5 +53,5 @@ form.addEventListener('submit', function(e) {
         document.getElementById('inicio').value = ""
         document.getElementById('fechaSalida').value = ""
         
-    }  
+    }      
 })

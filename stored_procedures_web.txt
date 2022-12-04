@@ -53,7 +53,7 @@ full outer join Galeria G on G.idDepartamento = D.idDepartamento
 full outer join EstadoDepto E on D.idEstadoDepto = E.idEstadoDepto
 full outer join Comuna C on D.idComuna = C.idComuna
 full outer join Region R on C.idRegion = R.idRegion
-WHERE cantHabitaciones = @personas AND C.idRegion = @region AND idEstadoDepto = 1
+WHERE cantHabitaciones = @personas AND C.idRegion = @region AND D.idEstadoDepto = 1
 END;
 ---------------------------------------------------------------
 CREATE PROCEDURE SP_RE_CargarRegion
@@ -248,3 +248,4 @@ JOIN Reservas R on DS.idReserva = R.idReserva
 JOIN Usuarios U on R.idUsuario = U.idUsuario
 WHERE U.idUsuario = @idUsuario AND R.idReserva = @idReserva
 END;
+--------------------
