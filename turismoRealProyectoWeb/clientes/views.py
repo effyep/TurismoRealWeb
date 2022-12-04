@@ -30,7 +30,7 @@ def enviarmailBoleta(correo,amount,depto,fechaT,tipoTarjeta,fechaD,fechaH,nombre
     content = template.render(contexto)
 
     email= EmailMultiAlternatives(
-        'Correo prueba',
+        'Confirmacióm de reserva',
         'TurismoReal',
         settings.EMAIL_HOST_USER,
         [correo]
