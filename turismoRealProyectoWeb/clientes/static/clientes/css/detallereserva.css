@@ -58,7 +58,7 @@ h1::after{
 }
 
 .contenedor .informacion{
-    width: 40%;
+ 
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -78,7 +78,9 @@ h1::after{
     outline:none;
     font-family: sans-serif;
     padding: 20px;
-    margin-right: 50px;
+    margin-right: 45px;
+    margin-left: 10px;
+    margin-top: 13px;
 }
 .contenedor .btn-Pagar{
     width: 150px;

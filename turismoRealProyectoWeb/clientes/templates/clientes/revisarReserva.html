@@ -12,18 +12,24 @@
         <div class="contenedor">
             <div class="contenedor-imagenes">
             <img src="{% static 'clientes/images/0.jpg'%}" class="principal" width="700" height="450">
-            <img src="{% static 'clientes/images/1.jpg'%}" width="230" height="230">
-            <img src="{% static 'clientes/images/2.jpg'%}" width="230" height="230">
-            <img src="{% static 'clientes/images/6.jpg'%}" width="230" height="230">
             </div>
             <form method="POST">
                 {% csrf_token %}
             <div class="informacion">
-                <h2>Estado de la reserva:{{c.15}}</h1>
+                
+                
                 <h2 class="subtitulo">{{c.9}}, {{c.10}}</h2>
-                <p>{{c.8}} personas | {{c.8}} habitaciones| {{c.7}}  baños</p>
+                <p>{{c.6}} personas | {{c.6}} habitaciones| {{c.7}}  baños</p>
                 <h3 class="subtitulito">Informacion de reserva</h3>
-                <h3>Valor del total reserva: ${{c.14}}</h3>
+                {% if servicios %}
+                <h3>Servicios extra contratados:</h3>
+                {% endif %}
+                {% for c in servicios %}
+                
+                <p>{{c.0}} x {{c.2}}</p>
+                <h3>${{c.3}}</h3>
+                {% endfor %}
+                <h3>Valor del total reserva: ${{c.12}}</h3>
                 <h3>Monto pagado:                       ${{c.14}}</h3>
                 <h3>Fecha de transacción:               {{c.13}}</h3>
                 <h3>Llegada:                            {{c.1}}</h3>
@@ -32,6 +38,7 @@
                 <br>
                 <br>
                 <br>
+                <h2>Estado de la reserva:{{c.15}}</h1>
                 <div class="boton">
                 
                 {% if c.15 != 'Cancelado' %}
@@ -49,19 +56,19 @@
         {% for m in messages %}
             <script>
                 Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
+                title: '¿Estas segur@?',
+                text: "Esta acción no se puede revertir!",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
+                confirmButtonText: 'Sí, Cancelar la reserva!'
                 }).then((result) => {
                 if (result.isConfirmed) {
                     window.location.href = "/Perfil"
                     Swal.fire(
-                    'Deleted!',
-                    'Your file has been deleted.',
+                    'Listo!',
+                    'Tu reserva fue cancelada exitosamente.',
                     'success'
                     )
                 }

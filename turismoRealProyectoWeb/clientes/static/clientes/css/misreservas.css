@@ -20,6 +20,13 @@
     text-decoration-color: aliceblue;
 }
 
+.reservaya{
+    display: block;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
 .Cancelado{
     text-align: justify;
     font-size: 25px;

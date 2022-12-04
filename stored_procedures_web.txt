@@ -45,7 +45,7 @@ CREATE PROCEDURE SP_C_EncontrarDepto
 @region  INT
 AS
 BEGIN
-SELECT D.idDepartamento, D.descripcion, D.direccion,
+SELECT distinct D.idDepartamento, D.descripcion, D.direccion,
 	D.cantHabitaciones, D.cantBanos,PrecioNoche, 
 	D.idComuna, D.idEstadoDepto ,C.idRegion,C.comuna, R.region
 from Departamentos D
@@ -53,7 +53,7 @@ full outer join Galeria G on G.idDepartamento = D.idDepartamento
 full outer join EstadoDepto E on D.idEstadoDepto = E.idEstadoDepto
 full outer join Comuna C on D.idComuna = C.idComuna
 full outer join Region R on C.idRegion = R.idRegion
-WHERE cantHabitaciones = @personas AND C.idRegion = @region
+WHERE cantHabitaciones = @personas AND C.idRegion = @region AND idEstadoDepto = 1
 END;
 ---------------------------------------------------------------
 CREATE PROCEDURE SP_RE_CargarRegion
@@ -203,7 +203,7 @@ CREATE PROCEDURE SP_CrearPosibleReserva
 @precioTotalReserva INT
 AS
 BEGIN
-INSERT INTO Reservas VALUES (@fechaDesde,@fechaHasta,'Pendiente',NULL,NULL,NULL,NULL,@precioNoche,NULL,@idDepartamento,@idUsuario,@precioTotalReserva)
+INSERT INTO Reservas VALUES (@fechaDesde,@fechaHasta,'Pendiente',NULL,NULL,NULL,NULL,@precioNoche,NULL,@precioTotalReserva,@idDepartamento,@idUsuario)
 END;
 -------------------------------------------------------------------------------------------------------------------------------------------------------
 CREATE PROCEDURE SP_IngresarAcompanantes
@@ -234,4 +234,17 @@ BEGIN
 SELECT idReserva 
 FROM Reservas
 WHERE abono IS NULL  AND idUsuario = @idUsuario AND idReserva = (SELECT IDENT_CURRENT('Reservas')) and idDepartamento = @idDepto
+END;
+-----------------------------------------------------------------------------------------------------
+CREATE PROCEDURE SP_SE_Contratados
+@idReserva INT,
+@idUsuario INT
+AS
+BEGIN
+SELECT S.descripcion, S.precio, DS.cantidad, DS.montoTotal
+FROM Servicios S
+JOIN DetalleServicio DS on S.idServicio = DS.idServicio
+JOIN Reservas R on DS.idReserva = R.idReserva
+JOIN Usuarios U on R.idUsuario = U.idUsuario
+WHERE U.idUsuario = @idUsuario AND R.idReserva = @idReserva
 END;

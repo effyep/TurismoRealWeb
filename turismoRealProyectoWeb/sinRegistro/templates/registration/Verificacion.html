@@ -18,6 +18,18 @@
             <h3>{{mensaje}}</h3>
             <input type="submit" value="Verificar" class="btn-Verificar"> 
     </form>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {% if messages %}
+    {% for m in messages %}
+        <script>
+            Swal.fire({
+                "title": "Atención",
+                "text": "{{m}}",
+                "icon": "warning"
+            })
+        </script>
+    {% endfor %}
+{% endif %}
     
 
     {% endblock %}

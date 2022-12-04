@@ -1,0 +1,77 @@
+{% load static %}
+<html>
+<head>
+    <style>
+        p{
+            color: rgb(0, 0, 0);
+            text-shadow: 10px;
+            box-shadow: inset;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            
+        }
+        .contenedor{
+            text-align: center;
+            border-radius: 60%;
+        }
+        .mensaje{
+            background-color: #462151;
+            margin-right: 10%;
+            margin-left: 10%;
+            border-style: ridge;
+        }
+
+        .titulo{
+            color: aliceblue;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+        }
+        .contenido{
+            background-color: #F3E5F5;
+            margin-right: 10%;
+            margin-left: 10%;
+            border-style: ridge;
+        }
+        .logo{
+            margin-right: 10%;
+            margin-left: 10%;
+        }
+        .footer{
+            background-color: #462151;
+            margin-right: 10%;
+            margin-left: 10%;
+            border-style: ridge;
+        }
+        
+
+    </style>
+</head>
+<body>
+    <div class="contenedor">
+        <div class="mensaje">
+            <h2 class="titulo">¡Felicitaciones tu pago fue aprobado!</h2>
+        </div>
+        <div class="contenido">
+            <div class="detalle">
+                <p>Detalle del pago:</p>
+            </div>
+            
+            <p>${{amount}} (WebPay) terminada en {{4digitos}}</p>
+            <p>Fecha desde: {{fechaD}}</p>
+            <p>Fecha hasta: {{fechaH}}</p>
+            <p>Reserva: {{nombreDepto}}, {{comunaDepto}}, {{regionDepto}}</p>
+            <p>Dirección: {{direccionDepto}}</p>
+            <p>Transacción realizada el {{fechaT}}</p>
+            <p>Tipo de Tarjeta: {{tipoTarjeta}}</p>
+
+        </div>
+        <footer>
+            <div class="footer">
+                <p>Turismo Real 2020</p>
+            </div>
+        </footer>
+        
+    </div>
+    
+
+
+</body>
+</html>

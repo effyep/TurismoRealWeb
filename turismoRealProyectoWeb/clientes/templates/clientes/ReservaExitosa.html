@@ -12,13 +12,12 @@
         <img class="check" src={% static "clientes/images/check.png" %}>
         <div class ="det-info">
             
-            
-            
             <h2>¡Felicitaciones tu pago fue aprobado!</h2>
             <p>Detalle del pago:</p>
             <p>${{respuesta.amount}} (WebPay) terminada en {{respuesta.card_detail.card_number}}</p>
             <p>Reserva departamento #02 Viña del Mar, Valparaíso</p>
             <p>Transacción realizada el {{respuesta.transaction_date}}</p>
+            <p>Tipo de Tarjeta: {{tipoTarjeta}}</p>
             <p>Descarga comprobante aquí.</p>
         {% endif %}
 

@@ -35,7 +35,7 @@ def iniciarSesion(request):
 def registro(request):
     data = {
     }
-
+    
     if request.method == 'POST':
         try:
             nombres = request.POST.get('nombres')
@@ -56,7 +56,7 @@ def registro(request):
             enviarEmail(codigoVerificacion,correo)
             return redirect('verificacion')
         except:
-            messages.success(request,"No pudimos registrarte, revisa tus datos e intentalo nuevamente")
+                messages.success(request,"No pudimos registrarte, revisa tus datos e intentalo nuevamente")
     return render(request,'registration/registro.html',data)
 
 def verificacion(request):
@@ -68,7 +68,7 @@ def verificacion(request):
             verificar(codigoVerificacion)
             return redirect('iniciarSesion')
         else:
-            data['mensaje'] = 'El codigo ingresado es incorrecto'
+            messages.success(request,'El código ingresado es incorrecto')
     return render(request, 'registration/Verificacion.html', data)
 
 def generarCodigoVerificacion():

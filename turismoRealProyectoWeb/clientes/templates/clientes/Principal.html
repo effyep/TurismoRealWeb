@@ -48,7 +48,7 @@
         {% for c in resultados %}
         
         <div class="form-busqueda">
-            <img  src="{% static 'clientes/images/resultado.jpg'%}" class="img-busqueda">
+            <img  src="{% static 'clientes/images/1- '%}{{ c.0}}.jpg" class="img-busqueda">
             <h2>{{c.9}},{{c.10}}</h2>
             <h4>${{c.5}} CLP Noche</h4>
             <a name = 'huespedes'>{{c.3}} huespedes</a>

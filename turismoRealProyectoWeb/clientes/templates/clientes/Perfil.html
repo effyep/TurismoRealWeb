@@ -2,17 +2,26 @@
 {% load static %}
 {% block head %}
     <link rel="stylesheet" href="{% static 'clientes/css/misreservas.css' %}">
-
+    
 {% endblock %}
 {% block contenido %}
 
-
-    
     <form>
         <h1 class="titulo">MIS RESERVAS</h1>
+
+        {% if not id %}
+        <div style="text-align:center;">
+            
+            <img class =" reservaya"src="{% static 'clientes/images/reservaya.jpg'%}">
+            
+        </div>
+            
+        {% endif %}
+
+
         {% for c in id %}
         <div class="contenedor1">
-            <img class="img-vina" src="{% static 'clientes/images/resultado.jpg'%}">
+            <img class="img-vina" src="{% static 'clientes/images/principal- '%}{{ c.5}}.jpg">
             <div class="informacion">
                 
                 <h1 class='{{c.12}}'>{{c.12}}</h3>
@@ -23,11 +32,8 @@
                 <button class="btn-Revisar"><a href="{% url 'revisarReserva' c.0 %}" >Revisar</a></button>
                                                     
                 <h3 class="reserva">Informacion de reserva</h3>
-                <br>
                 <h3>
-                
                     <br>
-
                     Valor del departamento:${{c.4}}
                     <br>
                     Monto pagado:                       ${{c.3}}
@@ -45,4 +51,16 @@
     {% endfor %}
 
 </div>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{% if messages %}
+    {% for m in messages %}
+        <script>
+            Swal.fire({
+                "title": "Recordatorio",
+                "text": "{{m}}",
+                "icon": "warning"
+            })
+        </script>
+    {% endfor %}
+{% endif %}
 {% endblock %}

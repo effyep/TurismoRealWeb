@@ -24,11 +24,11 @@
         
 
         {% for c in depto %}
-        <form {% if url %} action={{url}} {% endif %} class="form-descripcion" method="POST">
+        <form {% if url %} action={{url}} {% endif %} class="form-descripcion" method="POST" id="form-pago">
             {% csrf_token %}
             
             <input type="hidden" name="token_ws" {% if token %} value="{{token}}" {% endif %} />
-            <img class="form-img" src="{% static 'clientes/images/resultado.jpg'%}" alt="No se encuentra disponible">
+            <img class="form-img" src="{% static 'clientes/images/principal- '%}{{ c.0}}.jpg" alt="No se encuentra disponible">
             <h1 class="title1">{{c.10}}, {{c.11}}</h1>
             <div class="form-info">
                 <h3 class="title2">Información del precio</h3>

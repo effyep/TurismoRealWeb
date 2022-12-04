@@ -5,8 +5,37 @@ from django.contrib import messages
 from .models import Usuarios, Detalleservicio
 from transbank.webpay.webpay_plus.transaction import *
 from transbank.common.options import *
+from django.template.loader import get_template
+from django.core.mail import EmailMultiAlternatives
+from django.conf import settings
 
+def enviarmailBoleta(correo,amount,depto,fechaT,tipoTarjeta,fechaD,fechaH,nombreDepto,direccionDepto,comunaDepto,regionDepto,digitos):
+    contexto={'correo':correo,
+                'amount':amount,
+                'depto':depto,
+                'fechaT':fechaT,
+                'fechaD':fechaD,
+                'fechaH':fechaH,
+                'tipoTarjeta':tipoTarjeta,
+                'nombreDepto':nombreDepto,
+                'direccionDepto':direccionDepto,
+                'comunaDepto':comunaDepto,
+                'regionDepto':regionDepto,
+                '4digitos': digitos
+                }
 
+    template = get_template("clientes/correoBoleta.html")
+    content = template.render(contexto)
+
+    email= EmailMultiAlternatives(
+        'Correo prueba',
+        'TurismoReal',
+        settings.EMAIL_HOST_USER,
+        [correo]
+    )
+    email.attach_alternative(content,'text/html')
+    email.send()
+    
 
 # Create your views here.
 
@@ -17,9 +46,7 @@ def home(request):
     if 'usuario_id' in request.session:
         usuarioActual = request.session['usuario']
         data ['usuarioActual']= usuarioActual
-
-    
-
+        
     if request.method == 'POST':
         region = request.POST.get('Regiones')
         personas = request.POST.get('Personas')
@@ -28,11 +55,13 @@ def home(request):
         print(resultados)
     return render(request, 'clientes/Principal.html', data)
 
-
 def miPerfil(request):
     data ={
         
     }
+    usuarioActual = request.session.get("bolsa")
+    if usuarioActual is None:
+        return redirect('home')
     if 'usuario_id' in request.session:
         usuarioActual = request.session['usuario']
         data ['usuarioActual']= usuarioActual
@@ -40,17 +69,26 @@ def miPerfil(request):
         data['id']= mostrarReservas(idUsuarioActual)
         print(data['id'])
 
+    if not data['id']:
+        messages.success(request,"No tienes ninguna reserva aún, puedes comenzar en cualquier minuto.")
+    
+    
+
     return render(request, 'clientes/Perfil.html',data)
 
 def revisarReserva(request,item):
+    usuarioActual = request.session.get("bolsa")
+    if usuarioActual is None:
+        return redirect('home')
     usuarioId= request.session['usuario_id']
     data = {
         
         }
     if 'usuario_id' in request.session:
         data['reservas']= RReserva(item)
-        print(data['reservas'])
-        print(request.session['usuario_id'])
+        data['servicios']= servicioExtrasContratados(item,usuarioId)
+        print(data['servicios'])
+
         usuarioActual = request.session['usuario']
         data ['usuarioActual']= usuarioActual
     if request.method == 'POST':
@@ -70,16 +108,46 @@ def ComoReservar(request):
         
     return render(request, 'clientes/ComoReservar.html', data)
     
-
 def listarUsuarios(request):
     data = list(Usuarios.objects.values('usuario','correo','identificacion','celular'))
     return JsonResponse(data, safe = False)
 
-
-
 def reservaExitosa(request):
-    data = {}
-    bolsa = request.session['bolsa']
+    ##traer la bolsa
+    bolsa = request.session.get('bolsa')
+    ##Esta variable es entregada por transbank en caso de haber un problema con el pago
+    tbk=request.GET.get('TBK_ORDEN_COMPRA')
+    #si hay un problema o en la sesion no existe una bolsa entonces redireccione a la vista anterior
+    if tbk is None:
+        return redirect('confirmarReserva')
+    if bolsa is None:
+        return redirect('home')
+
+
+    idDepto = bolsa['idDepartamento']
+    
+    idUsuario = request.session['usuario_id']
+    u = Usuarios.objects.filter(idusuario = idUsuario).values()
+    correoUsuario=u[0]['correo']
+
+    data = {
+        ##funcion que me trae toda la info del departamento pasandole la id
+        'depto': datosDepto(idDepto)
+    }
+    
+    ##de la bolsa extraigo el id del departamento
+    
+    ##aqui puedo sacar info del depto en si
+    ##nombre depto
+    nombreDepto = data['depto'][0][1]
+    ##direccion
+    direccionDepto=data['depto'][0][2]
+    ##comuna
+    comunaDepto =data['depto'][0][10]
+    ##region
+    regionDepto =data['depto'][0][11]
+
+    
     if 'usuario_id' in request.session:
         usuarioActual = request.session['usuario']
         data ['usuarioActual']= usuarioActual
@@ -87,36 +155,57 @@ def reservaExitosa(request):
         resultado=request.GET.get('token_ws')
         tx = Transaction(WebpayOptions(IntegrationCommerceCodes.WEBPAY_PLUS, IntegrationApiKeys.WEBPAY, IntegrationType.TEST))
         resp = tx.commit(resultado)
-        infoPosibleReserva = request.session['infoPosibleReserva']
-        id=infoPosibleReserva['idPosibleReserva']
-        monto =resp['amount']
+        fechaD=bolsa['fechaDesde']
+        fechaH=bolsa['fechaHasta']
         data['respuesta'] = resp
+        fechahora= resp['transaction_date']
+        fechaT= fechahora[0:10]
+        infoPosibleReserva = request.session['infoPosibleReserva']
+        print(infoPosibleReserva)
+        id=infoPosibleReserva['idPosibleReserva']
+        print(id)
+        monto =resp['amount']
+        digitos = resp['card_detail']['card_number']
         status=str(resp['status'])
-
+        order=str(resp['buy_order'])
+        payment_type_code = str(resp['payment_type_code'])
+        tipoDePago = {'VD':'Venta Debito','VN':'Venta Normal','VC':'Venta en cuotas','VP':'Venta Prepago'}
+        formaPago = tipoDePago.get(payment_type_code)
+        data['tipoTarjeta']= formaPago
+        print(formaPago)
+        print(str(resp['card_detail']), 'card detail owo')
         if (int(monto) == int(bolsa['precioTotal']) and (status == 'AUTHORIZED')):
             concretarReservaCompleto(id,monto)
+            crearBoletaPagoCompleto(formaPago,'WEBPAY',order,monto,id)
+            enviarmailBoleta(correoUsuario,monto,nombreDepto,fechaT,formaPago,fechaD,fechaH,nombreDepto,direccionDepto,comunaDepto,regionDepto,digitos)
             del request.session['infoPosibleReserva']
             del request.session['bolsa']
+            
+            
             
         elif (int(monto) == int(bolsa['abono']) and (status == 'AUTHORIZED')):
             print('es el abono')
             concretarReservaAbono(id,monto)
+            crearBoletaPagoAbono(formaPago,'WEBPAY',order,monto,id)
+            enviarmailBoleta(correoUsuario,monto,nombreDepto,fechaT,formaPago,fechaD,fechaH,nombreDepto,direccionDepto,comunaDepto,regionDepto,payment_type_code)
             del request.session['infoPosibleReserva']
             del request.session['bolsa']
         else:
             data['mensaje'] = 'hubo un problema al procesar el pago'
-            
-        
-
     return render(request, 'clientes/ReservaExitosa.html',data)
 
-
 def detalleParaReservar(request,item):
+    usuarioActual = request.session.get("usuario_id")
+    if usuarioActual is None:
+        return redirect('home')
     data ={
         'depto': datosDepto(item),
-        'servicios':datosServicio()
+        'servicios':datosServicio(),
+        'imagenes':traerImagenes(item)
     }
+    print(data['depto'])
     idUsuario = request.session['usuario_id']
+    print(data['imagenes'])
     
     if 'usuario_id' in request.session:
         usuarioActual = request.session['usuario']
@@ -175,16 +264,15 @@ def detalleParaReservar(request,item):
             pr = True
             data['IDPR']= pr
             crearBolsa(request,totalDias,precioTotalDias,inicio,fechaSalida,item,idServicio,cantidadServicioLimpio,precioTotalServicios,precioTotalReserva,abono,cantHuespedes)
-            print(request.session['bolsa'])
-
-            
-            #diccc = {'idServicios':idServicio, 'idDepto':item,'fechas':[fechaLlegada,fechaSalida],'totalDias':totalDias,'precioTotalDias':precioTotalDias,'precioServicios':precioTotalServicios,'precioReserva':precioTotalReserva,'totalAbono':abono}
     return render(request, 'clientes/detalleParaReservar.html' ,data)
 
 def solicitarReserva(request):
+    bolsa = request.session.get("bolsa")
+    if bolsa is None:
+        return redirect('home')
     bolsa = request.session['bolsa']
     data = {}
-    
+    print(bolsa,1111)
     data['servicios'] = []
 
     #c es el id de los servicios que selecciono el usuario y se encuentran en la bolsa
@@ -201,6 +289,7 @@ def solicitarReserva(request):
     if bolsa['precioTotal'] != 0 and 'usuario_id' in request.session:
         idDepto = bolsa['idDepartamento']
         depto = datosDepto(idDepto)
+        print(depto)
         data['depto'] = depto
         data['bolsa']= request.session['bolsa']
         usuarioActual = request.session['usuario']
@@ -245,7 +334,7 @@ def solicitarReserva(request):
             buy_order = "TR-3284932"
             ## Versión 3.x del SDK
             tx = Transaction(WebpayOptions(IntegrationCommerceCodes.WEBPAY_PLUS, IntegrationApiKeys.WEBPAY, IntegrationType.TEST))
-            response = tx.create(buy_order, '6jn0gz1jmyfbugwbnwhah8tukauv5a25', valor, 'http://127.0.0.1:8000/ConfirmarReserva')
+            response = tx.create(buy_order, '6jn0gz1jmyfbugwbnwhah8tukauv5a25', valor, 'http://127.0.0.1:8000/ReservaExitosa')
             url = response['url']
             token = response['token']
             #dejamos en una sesion el valor de id y monto para en la vista de confirmar segun lo recibido se ejecuten los SP concretar y boleta segun los parametros anteriores
@@ -269,7 +358,6 @@ def logout(request):
         return redirect('iniciarSesion')
     except KeyError:
             pass
-
 
 def EncontrarDepto(cantidadP, ubicacion):
     cursor = connection.cursor()
@@ -339,17 +427,17 @@ def mostrarReservas(idUsuario):
     resultados = cursor.fetchall()
     return resultados
 
-def RReserva(idReserva,):
+def RReserva(idReserva):
     cursor = connection.cursor()
     params=(idReserva,)
     cursor.execute("{CALL dbo.SP_U_RevisarReserva(%s)}", params)
     resultados = cursor.fetchall()
     return resultados
 
-def servicioExtrasContratados(idUsuario, idReserva):
+def servicioExtrasContratados(idReserva,idUsuario):
     cursor = connection.cursor()
-    params=(idUsuario,idReserva)
-    cursor.execute("{CALL dbo.SP_SEContratados(%s,%s)}",params)
+    params=(idReserva,idUsuario)
+    cursor.execute("{CALL dbo.SP_SE_Contratados(%s,%s)}",params)
     resultados = cursor.fetchall()
     return resultados
     
@@ -357,7 +445,6 @@ def concretarReservaCompleto(idPosibleReserva, monto):
     cursor = connection.cursor()
     params=(idPosibleReserva,monto)
     cursor.execute("{CALL dbo.SP_ConcretarReservaCompleto(%s,%s)}",params)
-
 
 def concretarReservaAbono(idPosibleReserva, monto):
 
@@ -388,7 +475,6 @@ def crearBolsa(request,dias,precioTotalDias,fechaDesde, fechaHasta,idDepartament
         del request.session['bolsa']
         crearBolsa(request,dias,precioTotalDias,fechaDesde, fechaHasta,idDepartamento,servicios,cantidadServiciosLimpio,precioTotalServicios,precioTotal,abono,acompañantes)
     
-
 def infoParaConfirmar(request,idPosibleReserva,monto):
     ConsultarinfoPosibleReserva = request.session.get('infoPosibleReserva')
     if ConsultarinfoPosibleReserva == None:
@@ -396,7 +482,6 @@ def infoParaConfirmar(request,idPosibleReserva,monto):
     else:
         del request.session['infoPosibleReserva']
         infoParaConfirmar(request,idPosibleReserva,monto)
-
 
 def crearPosibleReserva(fechaDesde, fechaHasta, precioNoche, idDepartamento,idUsuario, precioTotalReserva):
     cursor = connection.cursor()
@@ -419,4 +504,12 @@ def obtenerIdPosibleReserva(idUsuario, idDepto):
     cursor.execute("{CALL dbo.SP_ObtenerIdPosibleReserva(%s,%s)}",params)
     resultado = cursor.fetchall()
     return resultado
+
+def traerImagenes(idDepto):
+    cursor = connection.cursor()
+    params=(idDepto,)
+    cursor.execute("{CALL dbo.SP_TraerDescripcionImg(%s)}",params)
+    resultados= cursor.fetchall()
+    return resultados
+
 

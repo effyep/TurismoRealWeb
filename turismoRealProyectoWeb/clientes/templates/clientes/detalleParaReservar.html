@@ -17,7 +17,7 @@
     {% for m in messages %}
         <script>
             Swal.fire({
-                "title": "Ojo piojo",
+                "title": "Atención",
                 "text": "{{m}}",
                 "icon": "warning"
             })
@@ -28,17 +28,17 @@
     {% for c in depto %}     
     <h1 class="title">{{c.10}}, {{c.11}}</h1>
     <div class="galeria">
-        <a href="#img1"><img src="{% static 'clientes/images/0.jpg'%}"></a>
-        <a href="#img2"><img src="{% static 'clientes/images/1.jpg'%}"></a>
-        <a href="#img3"><img src="{% static 'clientes/images/2.jpg'%}"></a>
-        <a href="#img4"><img src="{% static 'clientes/images/4.jpg'%}"></a>
-        <a href="#img5"><img src="{% static 'clientes/images/6.jpg'%}"></a>
+        {% for c in imagenes %}
+        <a href="#img1"><img src= "{% static 'clientes/images/'%}{{ c.0}}.jpg"></a>
+        {% endfor %}
     </div>
+    <br>
+    <br>
     <div class="modal" id="img1">
         <h3>Imagen 1</h3>
         <div class="imagen">
             <a href="#img5">&#60;</a>
-            <a href="#img2"><img src="Imagenes\gato.png"></a>
+            <a href="#img2"><img src="{% static 'clientes/images/1- '%}{{ c.0}}.jpg"></a>
             <a href="#img2">></a>
         </div>
         <a class="cerrar" href="">x</a>
@@ -47,7 +47,7 @@
         <h3>Imagen 2</h3>
         <div class="imagen">
             <a href="#img1">&#60;</a>
-            <a href="#img3"><img src="Imagenes\gatonojao.jpg"></a>
+            <a href="#img3"><img src="{% static 'clientes/images/2- '%}{{ c.0}}.jpg"></a>
             <a href="#img3">></a>
         </div>
         <a class="cerrar" href="">x</a>
@@ -56,7 +56,7 @@
         <h3>Imagen 3</h3>
         <div class="imagen">
             <a href="#img2">&#60;</a>
-            <a href="#img4"><img src="Imagenes\gatotierno.jpg"></a>
+            <a href="#img4"><img src="{% static 'clientes/images/3- '%}{{ c.0}}.jpg"></a>
             <a href="#img4">></a>
         </div>
         <a class="cerrar" href="">x</a>
@@ -65,7 +65,7 @@
         <h3>Imagen 4</h3>
         <div class="imagen">
             <a href="#img3">&#60;</a>
-            <a href="#img5"><img src="Imagenes\ok.jpg"></a>
+            <a href="#img5"><img src="{% static 'clientes/images/4- '%}{{ c.0}}.jpg"></a>
             <a href="#img5">></a>
         </div>
         <a class="cerrar" href="">x</a>
@@ -74,7 +74,7 @@
         <h3>Imagen 5</h3>
         <div class="imagen">
             <a href="#img4">&#60;</a>
-            <a href="#img1"><img src="Imagenes\ok.jpg"></a>
+            <a href="#img1"><img src="{% static 'clientes/images/5- '%}{{ c.0}}.jpg"></a>
             <a href="#img1">></a>
         </div>
         <a class="cerrar" href="">x</a>
@@ -136,7 +136,7 @@
         <input type="submit" value="Consultar" class="btn-reservar">
         <button class="btn-reservar"><a  href="{% url 'confirmarReserva' %}" class="acolor" >Ir a la bolsa</a></button>
         {% else %}
-        <input type="submit" value="Consultar disponibilidad" class="btn-reservar">
+        <input type="submit" value="Consultar disponibilidad" id="submit" class="btn-reservar">
         {% endif %}
         
         
