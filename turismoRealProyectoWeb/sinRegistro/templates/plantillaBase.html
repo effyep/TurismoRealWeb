@@ -5,6 +5,7 @@
     
     <link rel="stylesheet" href="{% static 'sinRegistro/css/stylebase.css' %}">
     <script src="https://kit.fontawesome.com/86ec04efd1.js" crossorigin="anonymous"></script>
+    <link rel="icon" type="{% static 'clientes/images/Logo 3.png'%}" >
     {% block head %}
     {% endblock %}
 </head>
@@ -25,7 +26,7 @@
                 <li><a href="{% url 'perfil' %}">Mi Perfil</a></li>
                 <li><a href="{% url 'logout' %}" name ='CerrarSesion'>Cerrar Sesión</a></li>
                 {% else %}
-                <li><a href="Registrarse">Registrate</a></li>
+                <li><a href="Registrarse">Regístrate</a></li>
                 <li><a href="IniciarSesion">Iniciar Sesion</a></li>
                 {% endif %}
                 
@@ -43,7 +44,7 @@
     {% endblock %}
     
 </body>
-
+<br><br>
 <footer class="pie-pagina">
     <div class="grupo-1">
         <div class="box-1">

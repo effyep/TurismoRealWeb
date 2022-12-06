@@ -30,13 +30,14 @@
 .form-busqueda {
     position: relative;
     width: 320px;
-    height: 500px;
+    height: 453px;
     margin-left: 190px;
-    margin-right: 190px;
+    margin-right: 120px;
     margin-top: 90px;
     border-radius: 10px;
     box-shadow: 0px 0px 10px 0px rgb(0 0  0/ 30%);
     margin-bottom: 100%px; 
+    float: left;
 }
 
 
@@ -52,14 +53,13 @@
 h2 {
     position: relative;
     text-align: center;
-    margin-left: 15px;
 }
 
 h4 {
-    text-align: justify;
+    text-align: center;
     font-size: 25px;
-    margin-left: 30px;
-    margin-top: 60px;
+    margin-left: auto;
+    margin-top: 3px;
     color: rgb(95, 2, 100);
 }
 
@@ -70,16 +70,16 @@ p{
 }
 
 a{
-    color: #F5F5F5;
+    color: #ffffff;
 }
 
 .parrafo {
     position: relative;
-    text-align: justify;
+    text-align: center;
     font-size: 15px;
     margin-left: 30px;
     margin-right: 35px;
-    margin-top: -15px;
+    margin-top: 22px;
 }
 
 .btn-busqueda {

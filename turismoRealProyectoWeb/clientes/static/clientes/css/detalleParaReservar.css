@@ -228,9 +228,9 @@ h5 {
 }
 
 .modal:target {
-    transition: all 0.5s;
+
     position: fixed;
-    background: rgba(0,0,0,0.8);
+    background: rgba(255, 255, 255, 0.699);
     top: 0;
     left: 0;
     width: 100%;
@@ -254,7 +254,7 @@ h5 {
 }
 
 .imagen a {
-    color: #fff;
+    color: rgb(0, 0, 0);
     font-size: 40px;
     text-decoration: none;
     margin: 0 10px;
@@ -278,7 +278,7 @@ h5 {
 
 .cerrar {
     display: block;
-    background: #fff;
+    background: rgb(236, 135, 135);
     width: 25px;
     height: 25px;
     margin: 15px auto;

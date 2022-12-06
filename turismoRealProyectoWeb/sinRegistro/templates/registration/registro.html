@@ -18,39 +18,39 @@
         
         <div class="contenedor">
             <div class="NombresRegistro">
-                <input type="text" name="nombres" id="nombres" placeholder="Nombres"  >
+                <input type="text" name="nombres" id="nombres" placeholder="Nombres"  required>
                 <span ></span>
             </div>
             <div class="ApellidosRegistro">
-                <input type="text" name="apellidos" id="apellidos" placeholder="Apellidos" >
+                <input type="text" name="apellidos" id="apellidos" placeholder="Apellidos" required>
                 <span ></span>
             </div>
             <div class="Usuario">
-                <input type="text" name="usuario" id="usuario" placeholder="Usuario"  >
+                <input type="text" name="usuario" id="usuario" placeholder="Usuario"  required>
                 <span ></span>
             </div>
             <div class="EmailRegistro">
-                <input type="email" name="email" id="email" placeholder="Email"  >
+                <input type="email" name="email" id="email" placeholder="Email" required>
                 <span></span>
             </div>
             <div class="Contraseña">
-                <input type="password" name="contraseña" id="contraseña" placeholder="Contraseña" >
+                <input type="password" name="contraseña" id="contraseña" placeholder="Contraseña" required>
                 <span></span>
             </div>
             <div class="RepContraseña">
-                <input type="password" name="repcontraseña" id="repcontraseña" placeholder="Repetir Constraseña" >
+                <input type="password" name="repcontraseña" id="repcontraseña" placeholder="Repetir Constraseña" required>
                 <span></span>
             </div>
             <div class="Identificacion">
-                <input type="text" name="identificacion" id="identificacion" placeholder="RUT o pasaporte"  >
+                <input type="text" name="identificacion" id="identificacion" placeholder="RUT o pasaporte"  required>
                 <span></span>
             </div>
             <div class="Celular">
-                <input type="text" name="celular" id="celular" placeholder="Celular" >
+                <input type="text" name="celular" id="celular" placeholder="Celular" required>
                 <span></span>
             </div>
             <div class="Pais">
-                <input type="text" name="pais" id="pais" placeholder="Pais" >
+                <input type="text" name="pais" id="pais" placeholder="Pais" required>
                 <span></span>
             </div>
         </div> 
@@ -65,7 +65,7 @@
     {% for m in messages %}
         <script>
             Swal.fire({
-                "title": "Ojo piojo",
+                "title": "Advertencia",
                 "text": "{{m}}",
                 "icon": "warning"
             })

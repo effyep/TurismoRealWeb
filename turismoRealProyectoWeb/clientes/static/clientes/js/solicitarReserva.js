@@ -13,7 +13,7 @@ function crearEmelentos(){
         nombreHuesped.placeholder="Nombres"
         nombreHuesped.id= "nombreHuesped"+huesped
         nombreHuesped.className = "nombres"
-        nombreHuesped.required = false
+        nombreHuesped.required = true
 
 
         const identificacionHuesped = document.createElement('input');
@@ -21,14 +21,15 @@ function crearEmelentos(){
         identificacionHuesped.id = "identificacion"+huesped
         identificacionHuesped.placeholder="Rut o Pasaporte"
         identificacionHuesped.className = "rut"
-        identificacionHuesped.required = false
+        identificacionHuesped.required = true
 
         const apellidoHuesped = document.createElement('input');
         apellidoHuesped.name="apellido"+huesped;
         apellidoHuesped.id="apellidoHuesped"+huesped;
         apellidoHuesped.placeholder = "Apellidos"
         apellidoHuesped.className = "apellidos"
-        apellidoHuesped.required=false
+        apellidoHuesped.required=true
+        
 
         const div = document.createElement('div');
         div.className ="divhuesped"
@@ -57,11 +58,11 @@ const validarNombres =nombreHuesped.forEach(nombre => {
             
             if(valorCampo.trim().length ===0){
                 console.log('vacio')
-                form.addEventListener('submit',pd);
+                
             }
             else if(valorCampo.trim().length >0)
             {
-                form.removeEventListener('submit', pd);
+                console.log('todo bien')
             }
         })
     })

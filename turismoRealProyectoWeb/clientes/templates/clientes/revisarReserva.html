@@ -24,11 +24,12 @@
                 {% if servicios %}
                 <h3>Servicios extra contratados:</h3>
                 {% endif %}
+
                 {% for c in servicios %}
-                
                 <p>{{c.0}} x {{c.2}}</p>
                 <h3>${{c.3}}</h3>
                 {% endfor %}
+
                 <h3>Valor del total reserva: ${{c.12}}</h3>
                 <h3>Monto pagado:                       ${{c.14}}</h3>
                 <h3>Fecha de transacción:               {{c.13}}</h3>
@@ -38,10 +39,10 @@
                 <br>
                 <br>
                 <br>
-                <h2>Estado de la reserva:{{c.15}}</h1>
+                
                 <div class="boton">
                 
-                {% if c.15 != 'Cancelado' %}
+                {% if c.15 != 'Cancelado' or c.15 != 'Finalizada' %}
                 <input type="submit" value="Cancelar reserva" class="btn-Cancelar">
                 
                 {% endif %}

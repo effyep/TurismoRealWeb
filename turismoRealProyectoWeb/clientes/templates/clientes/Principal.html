@@ -51,46 +51,81 @@
             <img  src="{% static 'clientes/images/1- '%}{{ c.0}}.jpg" class="img-busqueda">
             <h2>{{c.9}},{{c.10}}</h2>
             <h4>${{c.5}} CLP Noche</h4>
-            <a name = 'huespedes'>{{c.3}} huespedes</a>
-            <a name = 'habitación'>{{c.3}} habitación</a>
-            <a name = 'huespedes'>{{c.4}} huespedes</a>
+            <div class ="detalles">
+                <a class ="letras" name = 'huespedes'>{{c.3}} huespedes</a>
+                <a class ="letras" name = 'habitación'>{{c.3}} habitación</a>
+                <a  class ="letras" name = 'huespedes'>{{c.4}} huespedes</a>
+                
+            </div>
             <p class="parrafo">Los servicios extra se deben añadir al momento de realizar la reserva</p>
             {% if usuarioActual %}
-            <button class="btn-busqueda"><a href="{% url 'detalleParaReservar' c.0 %}" >Reservar</a></button>
+            <button class="btn-busqueda"><a class = "link" href="{% url 'detalleParaReservar' c.0 %}" >Reservar</a></button>
             {% else %}
 
             <button class="btn-busqueda"><a href="IniciarSesion">Reservar</a></button>
             {% endif %} 
         </div>
         {% endfor %}
-        
-        <div>
-            <h1 class="tituloDescripcion">LO QUE HACEMOS</h1>
+        <br><br>
+        {% if resultados == None %}
+        <div style="float: none">
+            <div>
+                <h1 class="tituloDescripcion">LO QUE HACEMOS</h1>
+            </div>
+            <div class="informacion">
+
+                <div class="box1">
+                    <img src="{% static 'clientes/images/CASA.jpg'%}" class="img1">
+                    <p>Realizamos las publicaciones, agendamos las reservas y nos encargamos
+                        de todo tipo de trámites necesarios el termino de contrato.
+                    </p>
+                </div>
+                <div class="box2">
+                    <img src="{% static 'clientes/images/ESTRELLA.jpg'%}" class="img2">
+                    <p>Servicio extra y planificaión al departamento reservado si se desea.</p>
+                </div>
+                <div class="box3">
+                    <img src="{% static 'clientes/images/DOCUMENTO.jpg'%}" class="img3">
+                    <p>Elaboramos los contratos de arriendo, de manera personalizada
+                        adecuandonos a las solicitudes de cada persona.
+                    </p>
+                </div>
+            </div>
         </div>
-        
-        <div class="informacion">
-            <div class="box1">
-                <img src="{% static 'clientes/images/CASA.jpg'%}" class="img1">
-                <p>Realizamos las publicaciones, agendamos las reservas y nos encargamos
-                    de todo tipo de trámites necesarios el termino de contrato.
-                </p>
-            </div>
-            <div class="box2">
-                <img src="{% static 'clientes/images/ESTRELLA.jpg'%}" class="img2">
-                <p>Servicio extra y planificaión al departamento reservado si se desea.</p>
-            </div>
-            <div class="box3">
-                <img src="{% static 'clientes/images/DOCUMENTO.jpg'%}" class="img3">
-                <p>Elaboramos los contratos de arriendo, de manera personalizada
-                    adecuandonos a las solicitudes de cada persona.
-                </p>
-            </div>
-        </div>
+        {% endif %}
         
         
         
     </section> 
+    {% if resultados%}
     <br>    
     <br> 
+    <br><br>    
     <br> 
+    <br><br>    
+    <br> 
+    <br><br>    
+    <br> 
+    <br><br>    
+    <br> 
+    <br> 
+    <br>    
+    <br> 
+    <br><br>    
+    <br> 
+    <br><br>    
+    <br> 
+    <br><br>    
+    <br> 
+    <br><br>    
+    <br> 
+    <br>     <br>    
+    <br> 
+    <br><br>    
+    <br> 
+    <br><br>    
+    <br> 
+    {% endif %}
+  
+
 {% endblock %}

@@ -30,7 +30,7 @@ def enviarmailBoleta(correo,amount,depto,fechaT,tipoTarjeta,fechaD,fechaH,nombre
     content = template.render(contexto)
 
     email= EmailMultiAlternatives(
-        'Confirmacióm de reserva',
+        'Confirmación de reserva',
         'TurismoReal',
         settings.EMAIL_HOST_USER,
         [correo]
@@ -89,7 +89,7 @@ def revisarReserva(request,item):
     if 'usuario_id' in request.session:
         data['reservas']= RReserva(item)
         data['servicios']= servicioExtrasContratados(item,usuarioId)
-        print(data['servicios'])
+        print(data['reservas'])
 
         usuarioActual = request.session['usuario']
         data ['usuarioActual']= usuarioActual
@@ -115,18 +115,16 @@ def listarUsuarios(request):
     return JsonResponse(data, safe = False)
 
 def reservaExitosa(request):
-    ##traer la bolsa
     bolsa = request.session.get('bolsa')
     ##Esta variable es entregada por transbank en caso de haber un problema con el pago
     tbk=request.GET.get('TBK_ORDEN_COMPRA')
     #si hay un problema o en la sesion no existe una bolsa entonces redireccione a la vista anterior
-    if tbk is True:
+    if tbk :
         return redirect('confirmarReserva')
     
-    bolsa = request.session['bolsa']
     if bolsa is None:
         return redirect('home')
-
+    bolsa = request.session['bolsa']
 
     idDepto = bolsa['idDepartamento']
     
@@ -162,6 +160,7 @@ def reservaExitosa(request):
         fechaD=bolsa['fechaDesde']
         fechaH=bolsa['fechaHasta']
         data['respuesta'] = resp
+        data['nombreDepto']= nombreDepto
         fechahora= resp['transaction_date']
         fechaT= fechahora[0:10]
         infoPosibleReserva = request.session['infoPosibleReserva']

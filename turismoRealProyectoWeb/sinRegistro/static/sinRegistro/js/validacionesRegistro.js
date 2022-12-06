@@ -1,7 +1,7 @@
 const tbNombres = document.getElementById("nombres");
 const tbApellidos = document.querySelector("[name=apellidos]");
 const tbUsuario= document.querySelector("[name=usuario]");
-var tbEmail = document.querySelector("[name=email]");
+const tbEmail = document.querySelector("[name=email]");
 const tbContrasena = document.querySelector("[name=contraseña]");
 const tbRepetirContrasena = document.getElementById("repcontraseña");
 const tbRutPasaporte = document.querySelector("[name=identificacion]");
@@ -23,9 +23,7 @@ const validarUsuario = e => {
             if(field == x.usuario){
                 f.nextElementSibling.classList.add("error");
                 f.nextElementSibling.innerText = "El nombre de usuario ya está en uso";
-                form.addEventListener('submit', function(e){
-                    e.preventDefault()
-                })
+
                 break
             }
             else{
@@ -44,9 +42,7 @@ const validarCorreoExistente = e => {
             if(field == x.correo){
                 f.nextElementSibling.classList.add("error");
                 f.nextElementSibling.innerText = "El correo ya está en uso";
-                form.addEventListener('submit', function(e){
-                    e.preventDefault()
-                })
+
                 break
             }
             else{
@@ -66,9 +62,7 @@ const validarIdentificacion = e => {
             if(field == x.identificacion){
                 f.nextElementSibling.classList.add("error");
                 f.nextElementSibling.innerText = "El rut/pasaporte ya está en uso";
-                form.addEventListener('submit', function(e){
-                    e.preventDefault()
-                })
+
                 break
             }
             else{
@@ -88,9 +82,7 @@ const validarCelular = e => {
             if(field == x.celular){
                 f.nextElementSibling.classList.add("error");
                 f.nextElementSibling.innerText = "El celular ya está en uso";
-                form.addEventListener('submit', function(e){
-                    e.preventDefault()
-                })
+
                 break
             }
             else{
@@ -107,11 +99,7 @@ const validarCamposVacios = (message, e) => {
     const valorCampo = e.target.value;
     if(valorCampo.trim().length == 0 ){
         field.nextElementSibling.classList.add("error");
-        field.nextElementSibling.innerText = message;
-        
-        form.addEventListener('submit', function(e){
-                e.preventDefault()
-            })}
+        field.nextElementSibling.innerText = message;}
 
     else
     {
@@ -148,8 +136,6 @@ const validarSintaxisRut = e =>{
     if(!Fn.validaRut(rut)){
         field.nextElementSibling.classList.add("error");
         field.nextElementSibling.innerText = "Ingrese un rut válido";
-        form.addEventListener('submit', function(e){
-            e.preventDefault()})
     }
     else{
         field.nextElementSibling.classList.remove("error");
@@ -164,9 +150,7 @@ const validarCorreo = e => {
     if(!regex.test(field.value)){
         field.nextElementSibling.classList.add("error");
         field.nextElementSibling.innerText = "Ingrese un correo válido";
-        form.addEventListener('submit', function(e){
-            e.preventDefault()
-        })
+
     }
     else{
         field.nextElementSibling.classList.remove("error");
@@ -176,7 +160,7 @@ const validarCorreo = e => {
 tbNombres.addEventListener("blur",(e) => validarCamposVacios("Los nombres no pueden quedar vacios",e))
 tbApellidos.addEventListener("blur", (e) => validarCamposVacios("Los apellidos no pueden quedar vacios",e))
 
-tbCelular.addEventListener("change",(e) => validarCamposVacios("El celular no puede quedar vacio",e))
+tbCelular.addEventListener("blur",(e) => validarCamposVacios("El celular no puede quedar vacio",e))
 tbCelular.addEventListener("blur",(e)=> validarCelular(e))
 tbCelular.addEventListener("blur",(e) => validarCelu("Ingrese 8 digitos para el celular",e))
 
@@ -189,9 +173,7 @@ tbRepetirContrasena.addEventListener("blur", (e) => {
         field.nextElementSibling.classList.add("error");
         field.nextElementSibling.innerText = "Las contraseñas no son iguales";
         
-        form.addEventListener('submit', function(e){
-            e.preventDefault()
-        })
+
     }
     else{
         field.nextElementSibling.classList.remove("error");
@@ -231,10 +213,7 @@ const validarRut = (e,mensaje,tipo) =>{
         case tipo = 'rut':
             if(valor.length < 10 || valor.length >10){
                 field.nextElementSibling.classList.add("error")
-                field.nextElementSibling.innerText = mensaje;
-                form.addEventListener('submit', function(e){
-                    e.preventDefault()
-                })    
+                field.nextElementSibling.innerText = mensaje;  
             }
             else{
                 field.nextElementSibling.classList.remove("error")
@@ -246,9 +225,7 @@ const validarRut = (e,mensaje,tipo) =>{
             if (valor.length < 7 || valor.length > 7){
                 field.nextElementSibling.classList.add("error")
                 field.nextElementSibling.innerText = mensaje;
-                form.addEventListener('submit', function(e){
-                    e.preventDefault()
-                })
+
             }
             else{
                 field.nextElementSibling.classList.remove("error")

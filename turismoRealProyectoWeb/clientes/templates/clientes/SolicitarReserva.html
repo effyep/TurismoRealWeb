@@ -13,12 +13,15 @@
             <h2>Tu viaje</h2>
             <h3>Fechas</h3>
             <p>{{bolsa.fechaDesde}} - {{bolsa.fechaHasta}}</p>
+            {% if bolsa.acompañante != None %}
             <h3>Huéspedes</h3>
             <p id="huespedes">{{bolsa.acompañante}}</p>
+            {% endif %}
         </div>
-
+        <br><br><br><br>
         <div>
             <h1 class="metodo">Elige como quieres pagar</h1>
+            <br><br><br><br>
         </div>
 
         
@@ -28,7 +31,7 @@
             {% csrf_token %}
             
             <input type="hidden" name="token_ws" {% if token %} value="{{token}}" {% endif %} />
-            <img class="form-img" src="{% static 'clientes/images/principal- '%}{{ c.0}}.jpg" alt="No se encuentra disponible">
+            <img class="form-img" src="{% static 'clientes/images/1- '%}{{ c.0}}.jpg" alt="No se encuentra disponible">
             <h1 class="title1">{{c.10}}, {{c.11}}</h1>
             <div class="form-info">
                 <h3 class="title2">Información del precio</h3>
@@ -43,10 +46,11 @@
                 <p class="monto">${{c.total}}</p>
                 {% endfor %}
             </div>
-
+            {% if infoParaReservar == None %}
             <div class="agregarHuespedes" id ="agregarHuespedes">
                 <h1 class="registroHuespedes">Registro de Huespedes</h1>
             </div>
+            {% endif %}
 
             <div>
                 <h2 class="total-confirmar">TOTAL</h2>

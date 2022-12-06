@@ -35,16 +35,16 @@
     <br>
     <br>
     <div class="modal" id="img1">
-        <h3>Imagen 1</h3>
+        <h3></h3>
         <div class="imagen">
             <a href="#img5">&#60;</a>
-            <a href="#img2"><img src="{% static 'clientes/images/1- '%}{{ c.0}}.jpg"></a>
+            <a href="#img2"><img src="{% static 'clientes/images/1- '%}{{c.0}}.jpg"></a>
             <a href="#img2">></a>
         </div>
         <a class="cerrar" href="">x</a>
     </div>
     <div class="modal" id="img2">
-        <h3>Imagen 2</h3>
+        <h3></h3>
         <div class="imagen">
             <a href="#img1">&#60;</a>
             <a href="#img3"><img src="{% static 'clientes/images/2- '%}{{ c.0}}.jpg"></a>
@@ -53,7 +53,7 @@
         <a class="cerrar" href="">x</a>
     </div>
     <div class="modal" id="img3">
-        <h3>Imagen 3</h3>
+        <h3></h3>
         <div class="imagen">
             <a href="#img2">&#60;</a>
             <a href="#img4"><img src="{% static 'clientes/images/3- '%}{{ c.0}}.jpg"></a>
@@ -62,7 +62,7 @@
         <a class="cerrar" href="">x</a>
     </div>
     <div class="modal" id="img4">
-        <h3>Imagen 4</h3>
+        <h3></h3>
         <div class="imagen">
             <a href="#img3">&#60;</a>
             <a href="#img5"><img src="{% static 'clientes/images/4- '%}{{ c.0}}.jpg"></a>
@@ -71,7 +71,7 @@
         <a class="cerrar" href="">x</a>
     </div>
     <div class="modal" id="img5">
-        <h3>Imagen 5</h3>
+        <h3></h3>
         <div class="imagen">
             <a href="#img4">&#60;</a>
             <a href="#img1"><img src="{% static 'clientes/images/5- '%}{{ c.0}}.jpg"></a>
@@ -84,7 +84,7 @@
         <h2 class="total">${{c.5}} CLP Noche</h2>
 
 
-        <div >
+        <div class="llegada" >
             Llegada
             <input  type="date" min={{fechaHoy}} max="0000-00-00" name="inicio" id="inicio" required>
             <span></span>
